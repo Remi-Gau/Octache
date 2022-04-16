@@ -18,7 +18,7 @@ sys.path.insert(0, os.path.abspath("../.."))
 
 # -- Project information -----------------------------------------------------
 
-project = "FIXME"
+project = "mashlab"
 copyright = "Remi Gau"
 author = "Remi Gau"
 

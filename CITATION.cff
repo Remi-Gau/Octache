@@ -4,26 +4,26 @@
 
 cff-version: 1.2.0
 
-title: "FIXME"
+title: "mashlab"
 
 version: 0.1.0
 
-abstract: FIXME
+abstract: mashlab
 
 message: "If you use this software, please cite it as below."
 
-repository-code: "https://github.com/your_gh_username/FIXME"
+repository-code: "https://github.com/Remi-Gau/mashlab"
 
 contact:
-  - email: FIXME
-    family-names: FIXME
-    given-names: FIXME
+  - email: remi.gau@gmail.com
+  - family-names: Gau
+    given-names: Rémi
 
 authors:
-  - family-names: FIXME
-    given-names: FIXME
+  - family-names: Gau
+    given-names: Rémi
 
 license: GPL-3.0
 
 keywords:
-  - FIXME
+  - mashlab

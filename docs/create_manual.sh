@@ -2,4 +2,4 @@
 
 sphinx-build -M latexpdf source build
 
-cp build/latex/fixme.pdf FIXME.pdf
+cp build/latex/mashlab.pdf mashlab.pdf
