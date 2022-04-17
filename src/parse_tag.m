@@ -1,37 +1,52 @@
-function  [tag_type, tag_key, template] = parse_tag(template, l_del, r_del)
+function  [tag_type, tag_key, template] = parse_tag(varargin)
     %
     % Parse a tag from a template
     %
+    % USAGE::
+    %
+    %   [tag_type, tag_key, template] = parse_tag(template, l_del, r_del)
     %
     %
     % (C) Copyright 2022 Remi Gau
 
     global CURRENT_LINE
 
-    tag_types = {
-                 '!', 'comment'
-                 '#', 'section'
-                 '^', 'inverted section'
-                 '/', 'end'
-                 '>', 'partial'
-                 '=', 'set delimiter?'
-                 '{', 'no escape?'
-                 '&', 'no escape'
+    tag_types = {'!', 'comment'; ...
+                 '#', 'section'; ...
+                 '^', 'inverted section'; ...
+                 '/', 'end'; ...
+                 '>', 'partial'; ...
+                 '=', 'set delimiter?'; ...
+                 '{', 'no escape?'; ...
+                 '&', 'no escape' ...
                 };
+
+    args = inputParser;
+
+    args.addRequired('template', @ischar);
+    args.addOptional('l_del', '{{', @ischar);
+    args.addOptional('r_del', '}}', @ischar);
+
+    args.parse(varargin{:});
+
+    template = args.Results.template;
+    l_del = args.Results.l_del;
+    r_del = args.Results.r_del;
 
     % Get the tag
     try
         tmp = regexp(template, r_del, 'split', 'once');
         tag = tmp{1};
         template = tmp{2};
-        cler tmp;
+        clear tmp;
     catch
+        % TODO add test error
         error('unclosed tag at line %i', CURRENT_LINE);
     end
 
     % Find the type meaning of the first character
-    idx = cellfun(@(x) strcmp(x, tag(0)), tag_types(:, 1));
-    if isempty(idx)
+    idx = cellfun(@(x) strcmp(x, tag(1)), tag_types(:, 1));
+    if ~any(idx)
         tag_type = 'variable';
     else
         tag_type = tag_types{idx, 2};
@@ -48,9 +63,8 @@ function  [tag_type, tag_key, template] = parse_tag(template, l_del, r_del)
 
         % Double check to make sure we are
         if ~strcmp(tag(end), '=')
-
+            % TODO add test error
             error('unclosed tag at line %i', CURRENT_LINE);
-
         end
 
         tag_type = 'set delimiter';

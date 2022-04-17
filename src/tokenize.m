@@ -1,4 +1,4 @@
-function tokenize(varargin)
+function output = tokenize(varargin)
     %
     % Tokenizes a mustache template in a generator fashion,
     % using file-like objects. It also accepts a string containing
@@ -6,7 +6,7 @@ function tokenize(varargin)
     %
     % USAGE::
     %
-    %   tokenize(template, 'def_ldel', '{{', 'def_rdel, '}}')
+    %   tokenize(template, 'def_ldel', '{{', 'def_rdel', '}}')
     %
     %
     % Arguments:
@@ -22,9 +22,9 @@ function tokenize(varargin)
     %
     % Returns:
     %
-    % A generator of mustache tags in the form of a tuple
+    % A n x 2 cell of mustache tags in the form
     %
-    % -- (tag_type, tag_key)
+    % -- {tag_type, tag_key}
     %
     % Where tag_type is one of:
     %  * literal
@@ -47,9 +47,13 @@ function tokenize(varargin)
     CURRENT_LINE = 1;
     LAST_TAG_LINE = [];
 
+    output = {};
+
+    is_file = @(x) exist(x, 'file');
+
     args = inputParser;
 
-    args.addRequired('template', @isstruct);
+    args.addRequired('template', @ischar);
     args.addParameter('def_ldel', '{{', @ischar);
     args.addParameter('def_rdel', '}}', @ischar);
 
@@ -62,7 +66,9 @@ function tokenize(varargin)
     is_standalone = true;
     open_sections = {};
 
-    template = load_template(template);
+    if is_file(template)
+        template = load_template(template);
+    end
 
     while true
 
@@ -71,11 +77,13 @@ function tokenize(varargin)
         % If the template is completed
         % Then yield the literal and leave
         if strcmp(template, '')
-            return
+            output{end + 1, 1} = 'literal';
+            output{end, 2} = literal;
+            break
         end
 
         % Do the first check to see if we could be a standalone
-        is_standalone = l_sa_check(template, literal, is_standalone);
+        is_standalone = l_sa_check(literal, is_standalone);
 
         [tag_type, tag_key, template] = parse_tag(template, l_del, r_del);
 
@@ -103,6 +111,7 @@ function tokenize(varargin)
                     last_section = open_sections{end};
                     open_sections{end} = [];
                 catch
+                    % TODO add test error
                     error(['Trying to close tag %s.\n', ...
                            'Looks like it was not opened.\n', ...
                            'line %i'], ...
@@ -111,6 +120,7 @@ function tokenize(varargin)
 
                 % Otherwise we need to complain
                 if ~strcmp(tag_key, last_section)
+                    % TODO add test error
                     error(['Trying to close tag %s.\n', ...
                            'Last open tag is %s\n', ...
                            'line %i'], ...
@@ -135,20 +145,23 @@ function tokenize(varargin)
         end
 
         % Start returning
-        % % Ignore literals that are empty
-        % if ~strcmp(literal, '')
-        %     yield ('literal', literal)
-        % end
+        % Ignore literals that are empty
+        if ~strcmp(literal, '')
+            output{end + 1, 1} = 'literal';
+            output{end, 2} = literal;
+        end
 
         % % Ignore comments and set delimiters
-        % if ~ismember(tag_type, {'comment', 'set delimiter?'}
-        %     yield (tag_type, tag_key)
-        % end
+        if ~ismember(tag_type, {'comment', 'set delimiter?'})
+            output{end + 1, 1} = tag_type;
+            output{end, 2} = tag_key;
+        end
 
     end
 
     % If there are any open sections when we're done
     if ~isempty(open_sections)
+        % TODO add test error
         % Then we need to complain
         error(['Unexpected EOF\n', ...
                'the tag %s was never closed\n', ...

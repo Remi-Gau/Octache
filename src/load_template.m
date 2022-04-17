@@ -13,9 +13,10 @@ function template = load_template(tpl)
     % factored out from
     % gllmflndn/bids-matlab/blob/gllmflndn-report-template/%2Bbids/%2Binternal/parse_template.m
 
-    if ischar(tpl) && exist(tpl, 'file')
+    if ischar(tpl)
         fid = fopen(tpl, 'rt', 'native', 'UTF-8');
         if fid == -1
+            % TODO add test error
             error('Cannot open template file "%s".', tpl);
         end
         template = fscanf(fid, '%c');
@@ -25,7 +26,9 @@ function template = load_template(tpl)
         template  = char(tpl);
 
     else
+        % TODO add test error
         error('Invalid template.');
+
     end
 
 end

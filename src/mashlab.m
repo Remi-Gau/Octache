@@ -1,4 +1,4 @@
-function mashlab()
+function mashlab(varargin)
     %
     % Render mustache templates using json files as input data
     %
@@ -57,7 +57,7 @@ function mashlab()
 
     if ~strcmp(data, '')
         if ~is_file(data)
-            error('Could not open data file.');
+            error('%i is not a file.', data);
         else
             % requires JSONio
             data = jsondecode(data);
