@@ -13,8 +13,13 @@ When you have set up your repo you may need to change those badges
 <!-- TODO add matlab tests badge -->
 <!-- TODO why badges show "no status"? -->
 
-# Template repository for MATLAB / Octave projects
+# Mashlab
 
 A MATLAB / Octave implementation of the [mustache templating language](http://mustache.github.io).
 
-Port of [chevron](https://github.com/noahmorrison/chevron)
+Port of Noah Morrison's [chevron](https://github.com/noahmorrison/chevron)
+
+
+## TODO
+
+- unicode check support

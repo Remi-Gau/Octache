@@ -5,14 +5,14 @@ function mashlab(varargin)
     % :param template: The mustache file
     % :type template: path
     %
-    % :param path: The directory where your partials reside. Default is ``pwd``.
-    % :type path: path
+    % :param partials_path: The directory where your partials reside. Default is ``pwd``.
+    % :type partials_path: path
     %
     % :param data: The json data file
     % :type data: path
     %
-    % :param ext: The extension for your mustache partials, ``mustache`` by default
-    % :type ext: (1 x n) char
+    % :param partials_ext: The extension for your mustache partials, ``mustache`` by default
+    % :type partials_ext: (1 x n) char
     %
     % :param left_delim: The default left delimiter, ``{{`` by default
     % :type left_delim: (1 x n) char
@@ -32,8 +32,8 @@ function mashlab(varargin)
     args.addRequired('template', is_file);
     % only one json file allowed as data?
     args.addParameter('data', '');
-    args.addParameter('path', pwd, @isdir);
-    args.addParameter('ext', 'mustache', @ischar);
+    args.addParameter('partials_path', pwd, @isdir);
+    args.addParameter('partials_ext', 'mustache', @ischar);
     args.addParameter('left_delim', '{{', @ischar);
     args.addParameter('right_delim', '}}', @ischar);
     args.addParameter('warn', true, @islogical);

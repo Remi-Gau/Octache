@@ -1,4 +1,4 @@
-function output = tokenize(varargin)
+function tokens = tokenize(varargin)
     %
     % Tokenizes a mustache template in a generator fashion,
     % using file-like objects. It also accepts a string containing
@@ -6,17 +6,17 @@ function output = tokenize(varargin)
     %
     % USAGE::
     %
-    %   tokenize(template, 'def_ldel', '{{', 'def_rdel', '}}')
+    %   tokens = tokenize(template, 'l_del', '{{', 'r_del', '}}')
     %
     %
     % Arguments:
     %
     % template -- a file-like object, or a string of a mustache template
     %
-    % def_ldel -- The default left delimiter
+    % l_del -- The default left delimiter
     %             ("{{" by default, as in spec compliant mustache)
     %
-    % def_rdel -- The default right delimiter
+    % r_del -- The default right delimiter
     %             ("}}" by default, as in spec compliant mustache)
     %
     %
@@ -47,21 +47,21 @@ function output = tokenize(varargin)
     CURRENT_LINE = 1;
     LAST_TAG_LINE = [];
 
-    output = {};
+    tokens = {};
 
     is_file = @(x) exist(x, 'file');
 
     args = inputParser;
 
     args.addRequired('template', @ischar);
-    args.addParameter('def_ldel', '{{', @ischar);
-    args.addParameter('def_rdel', '}}', @ischar);
+    args.addParameter('l_del', '{{', @ischar);
+    args.addParameter('r_del', '}}', @ischar);
 
     args.parse(varargin{:});
 
     template = args.Results.template;
-    l_del = args.Results.def_ldel;
-    r_del = args.Results.def_rdel;
+    l_del = args.Results.l_del;
+    r_del = args.Results.r_del;
 
     is_standalone = true;
     open_sections = {};
@@ -77,8 +77,8 @@ function output = tokenize(varargin)
         % If the template is completed
         % Then yield the literal and leave
         if strcmp(template, '')
-            output{end + 1, 1} = 'literal';
-            output{end, 2} = literal;
+            tokens{end + 1, 1} = 'literal';
+            tokens{end, 2} = literal;
             break
         end
 
@@ -147,14 +147,14 @@ function output = tokenize(varargin)
         % Start returning
         % Ignore literals that are empty
         if ~strcmp(literal, '')
-            output{end + 1, 1} = 'literal';
-            output{end, 2} = literal;
+            tokens{end + 1, 1} = 'literal';
+            tokens{end, 2} = literal;
         end
 
         % % Ignore comments and set delimiters
         if ~ismember(tag_type, {'comment', 'set delimiter?'})
-            output{end + 1, 1} = tag_type;
-            output{end, 2} = tag_key;
+            tokens{end + 1, 1} = tag_type;
+            tokens{end, 2} = tag_key;
         end
 
     end

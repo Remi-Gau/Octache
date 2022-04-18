@@ -23,7 +23,7 @@ authors:
   - family-names: Gau
     given-names: Rémi
 
-license: GPL-3.0
+license: MIT
 
 keywords:
   - mashlab
