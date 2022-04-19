@@ -19,7 +19,6 @@ function test_get_partial_basic()
     partials_path = fullfile(test_dir, 'data');
     partials_ext = 'mustache';
     partials_dict = struct([]);
-    
 
     % WHEN
     partial = get_partial('partial', partials_dict, partials_path, partials_ext);
@@ -29,7 +28,6 @@ function test_get_partial_basic()
 
 end
 
-
 function test_get_partial_no_path()
 
     test_dir = fileparts(mfilename('fullpath'));
@@ -38,7 +36,6 @@ function test_get_partial_no_path()
     partials_path = '';
     partials_ext = 'mustache';
     partials_dict = struct([]);
-    
 
     % WHEN
     partial = get_partial('partial', partials_dict, partials_path, partials_ext);
@@ -56,7 +53,6 @@ function test_get_partial_dict()
     partials_path = '';
     partials_ext = 'mustache';
     partials_dict = struct('partial', 'foo');
-    
 
     % WHEN
     partial = get_partial('partial', partials_dict, partials_path, partials_ext);
