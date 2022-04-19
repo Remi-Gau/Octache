@@ -19,14 +19,14 @@ function partial = get_partial(name, partials_dict, partials_path, partials_ext)
     end
 
     % Don't try loading from the file system if the partials_path empty
-    if ismember(partials_path {[], ''})
+    if isempty(partials_path)
         return
     end
 
     % Nope...
     try
         % Maybe it's in the file system
-        partial_path = fullpath(partials_path, [name, '.', partials_ext]);
+        partial_path = fullfile(partials_path, [name, '.', partials_ext]);
         partial = load_template(partial_path);
 
     catch % IOError
