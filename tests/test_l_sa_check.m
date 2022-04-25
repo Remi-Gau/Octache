@@ -21,6 +21,6 @@ function test_l_sa_check_basic()
     status = l_sa_check(literal, is_standalone);
 
     % THEN
-    assertEqual(status, true);
+    assertEqual(status, false);
 
 end

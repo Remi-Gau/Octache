@@ -12,11 +12,11 @@ function status = r_sa_check(template, tag_type, is_standalone)
 
     % Check right side if we might be a standalone
     if is_standalone && ~ismember(tag_type, {'variable', 'no escape'})
-        tmp = regexp(template, '\\n', 'split', 'once');
+        tmp = regexp(template, newline, 'split', 'once');
         on_newline = tmp{1};
 
         % If the stuff to the right of us are spaces we're a standalone
-        if isspace(on_newline(1)) || isempty(on_newline(1))
+        if isempty(on_newline) || isspace(on_newline(1))
             status = true;
         else
             status = false;

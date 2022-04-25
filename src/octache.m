@@ -1,4 +1,4 @@
-function mashlab(varargin)
+function octache(varargin)
     %
     % Render mustache templates using json files as input data
     %

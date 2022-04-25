@@ -4,13 +4,21 @@
   "true": true,
   "false": false,
   "list": [
-      {"i": 1, "v": "one"},
-      {"i": 2, "v": "two"},
-      {"i": 3, "v": "three"}
+    {
+      "i": 1,
+      "v": "one"
+    },
+    {
+      "i": 2,
+      "v": "two"
+    },
+    {
+      "i": 3,
+      "v": "three"
+    }
   ],
-
   "scope": {
-      "test": "new test"
+    "test": "new test"
   },
   "unicode": "(╯°□°）╯︵ ┻━┻",
   "unicode_html": "<a>(╯°□°）╯︵ ┻━┻"

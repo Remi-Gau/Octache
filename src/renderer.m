@@ -82,6 +82,7 @@ function output = renderer(varargin)
     args.addParameter('l_del', '{{', @ischar);
     args.addParameter('r_del', '}}', @ischar);
     args.addParameter('padding', '', @ischar);
+    args.addParameter('partials_dict', struct([]));
     args.addParameter('warn', true, @islogical);
     args.addParameter('keep', true, @islogical);
 
@@ -95,6 +96,7 @@ function output = renderer(varargin)
     l_del = args.Results.l_del;
     r_del = args.Results.r_del;
     padding  = args.Results.padding;
+    partials_dict = args.Results.partials_dict;
     warn = args.Results.warn;
     keep = args.Results.keep;
 
@@ -113,12 +115,12 @@ function output = renderer(varargin)
         key = tokens{token_idx, 2};
 
         % Set the current scope
-        current_scope = scopes{0};
+        % current_scope = scopes{1};
 
         % If we're an end tag
         if strcmp(tag, 'end')
             % Pop out of the latest scope
-            scopes(1) = [];
+            % scopes(1) = [];
 
             % If the current scope is falsy and not the only scope
             % elseif not current_scope && length(scopes) ~= 1
@@ -135,11 +137,7 @@ function output = renderer(varargin)
             % If we're a variable tag
         elseif strcmp(tag, 'variable')
             % Add the html escaped key to the output
-            thing = get_key(key, scopes, ...
-                            'warn', warn, ...
-                            'keep', keep, ...
-                            'l_del', l_del, ...
-                            'r_del', r_del);
+            thing = get_key(key, scopes, warn, keep, l_del, r_del);
             % if thing is True and key == '.':
             % if we've coerced into a boolean by accident
             % (inverted tags do this)
@@ -153,11 +151,7 @@ function output = renderer(varargin)
             % If we're a no html escape tag
         elseif strcmp(tag, 'no escape')
             % Just lookup the key and add it
-            thing = get_key(key, scopes, ...
-                            'warn', warn, ...
-                            'keep', keep, ...
-                            'l_del', l_del, ...
-                            'r_del', r_del);
+            thing = get_key(key, scopes, warn, keep, l_del, r_del);
 
             % TODO unicode check
             % if not isinstance(thing, unicode_type):
@@ -172,26 +166,22 @@ function output = renderer(varargin)
             % If we're an inverted section
         elseif strcmp(tag, 'inverted section')
             % Add the flipped scope to the scopes
-            scope = get_key(key, scopes, ...
-                            'warn', warn, ...
-                            'keep', keep, ...
-                            'l_del', l_del, ...
-                            'r_del', r_del);
+            scope = get_key(key, scopes, warn, keep, l_del, r_del);
 
             % TODO
             % scopes.insert(0, not scope)
 
             % If we're a partial
-        elseif tag == 'partial'
+        elseif strcmp(tag, 'partial')
             % Load the partial
             partial = get_partial(key, partials_dict, partials_path, partials_ext);
 
             % Find what to pad the partial with
             % left = output.rpartition('\n')[2]
-            part_padding = padding;
-            if isspace(left)
-                part_padding = [part_padding, left];
-            end
+            %             part_padding = padding;
+            %             if isspace(left)
+            %                 part_padding = [part_padding, left];
+            %             end
 
             % Render the partial
             % TODO use partials dicts?
@@ -206,10 +196,10 @@ function output = renderer(varargin)
                                  'keep', keep);
 
             % If the partial was indented
-            if isspace(left)
-                % then remove the spaces from the end
-                part_out = part_out.rstrip(' \t');
-            end
+            %             if isspace(left)
+            %                 % then remove the spaces from the end
+            %                 part_out = part_out.rstrip(' \t');
+            %             end
 
             % Add the partials output to the ouput
             output = [output, part_out];

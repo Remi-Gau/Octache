@@ -1,0 +1,8 @@
+[submodule "spec"]
+	path = spec
+	url = https://github.com/mustache/spec
+	branch = master
+[submodule "lib/JSONio"]
+	path = lib/JSONio
+	url = https://github.com/gllmflndn/JSONio.git
+	branch = main

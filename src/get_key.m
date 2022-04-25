@@ -1,6 +1,8 @@
 function value = get_key(key, scopes, warn, keep, l_del, r_del)
     % Get a key from the current scope
     %
+    % value = get_key(key, scopes, warn, keep, l_del, r_del)
+    %
     % (C) Copyright 2022 Remi Gau
 
     value = '';
@@ -13,10 +15,11 @@ function value = get_key(key, scopes, warn, keep, l_del, r_del)
     end
 
     % Loop through the scopes
-    for scope = 1:numel(scopes)
+    for idx = 1:numel(scopes)
 
-        if isfield(scope, key)
-            value = scope.(key);
+        if isfield(scopes{idx}, key)
+            value = scopes{idx}.(key);
+            break
         end
 
     end
@@ -25,7 +28,7 @@ function value = get_key(key, scopes, warn, keep, l_del, r_del)
     if isempty(value)
 
         if warn
-            warning('Could not find key %s' key);
+            warning('Could not find key %s', key);
         end
 
         if keep

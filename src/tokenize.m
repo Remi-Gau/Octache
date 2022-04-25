@@ -109,7 +109,7 @@ function tokens = tokenize(varargin)
                 % is the same as us
                 try
                     last_section = open_sections{end};
-                    open_sections{end} = [];
+                    open_sections(end) = [];
                 catch
                     % TODO add test error
                     error(['Trying to close tag %s.\n', ...
@@ -134,11 +134,11 @@ function tokens = tokenize(varargin)
         % Which if we are
         if is_standalone
             % Remove the stuff before the newline
-            tmp = regexp(template, '\\n', 'split', 'once');
+            tmp = regexp(template, newline, 'split', 'once');
             template = tmp{2};
 
             % Partials need to keep the spaces on their left
-            if tag_type ~= 'partial'
+            if ~strcmp(tag_type, 'partial')
                 % But other tags don't
                 literal = deblank(literal);
             end

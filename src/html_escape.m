@@ -1,4 +1,4 @@
-function html_escape(string)
+function string = html_escape(string)
     %
     % HTML escape all of these "& < >"
     %

@@ -23,7 +23,9 @@ function setup()
     addpath(genpath(fullfile(pth, 'src')));
 
     % add libraries here
-    lib_directory = fullfile(root_dir(), 'lib'); %#ok<NASGU>
+    lib_directory = fullfile(root_dir(), 'lib');
+
+    addpath(fullfile(lib_directory, 'JSONio'));
 
     disp('checking MATLAB / Octave version.');
     if is_octave()
