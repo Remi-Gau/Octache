@@ -126,7 +126,7 @@ g_token_cache = {}
 
 def render(template='', data={}, partials_path='.', partials_ext='mustache',
            partials_dict={}, padding='', def_ldel='{{', def_rdel='}}',
-           scopes=None, warn=False, keep=False): 
+           scopes=None, warn=False, keep=False):
     """Render a mustache template.
 
     Renders a mustache template with a data scope and partial capability.
