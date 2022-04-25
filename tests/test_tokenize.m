@@ -11,6 +11,21 @@ function test_suite = test_tokenize %#ok<*STOUT>
 
 end
 
+function test_tokenize_comment()
+
+    % GIVEN
+    tpl_file = setup_test('comment');
+
+    % WHEN
+    tokens = tokenize(tpl_file);
+
+    % THEN
+    expected = {'literal', ['comment test' newline '===' newline]; ...
+                'literal', ['===' newline '===']};
+    assertEqual(tokens, expected);
+
+end
+
 function test_tokenize_basic()
 
     partials_path = fileparts(mfilename('fullpath'));

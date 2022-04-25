@@ -64,6 +64,7 @@ function tokens = tokenize(varargin)
     r_del = args.Results.r_del;
 
     is_standalone = true;
+    is_first = true;
     open_sections = {};
 
     if is_file(template)
@@ -73,6 +74,7 @@ function tokens = tokenize(varargin)
     while true
 
         [literal, template] = grab_literal(template, l_del);
+        is_first = false;
 
         % If the template is completed
         % Then yield the literal and leave
@@ -81,6 +83,9 @@ function tokens = tokenize(varargin)
             tokens{end, 2} = literal;
             break
         end
+
+        % track previous
+        was_standalone = is_standalone;
 
         % Do the first check to see if we could be a standalone
         is_standalone = l_sa_check(literal, is_standalone);
@@ -135,13 +140,33 @@ function tokens = tokenize(varargin)
         if is_standalone
             % Remove the stuff before the newline
             tmp = regexp(template, newline, 'split', 'once');
-            template = tmp{2};
+            if numel(tmp) == 2
+                template = tmp{2};
+            else
+                template = tmp{1};
+            end
 
             % Partials need to keep the spaces on their left
             if ~strcmp(tag_type, 'partial')
                 % But other tags don't
-                literal = deblank(literal);
+                literal = strip(literal, 'left');
             end
+
+            % Remove spaces after linebreak and before standalone
+            if ~is_first && strcmp(tag_type, 'comment')
+                tmp = regexp(literal, newline, 'split');
+                tmp{end} = strip(tmp{end}, 'left');
+                literal = strjoin(tmp, newline);
+            end
+
+        end
+
+        % Standalone tags should not require a newline to precede them.
+        if ~strcmp(literal, '') && ...
+            was_standalone && ...
+            isempty(tokens) && ...
+            strcmp(literal(1), newline)
+            literal(1) = [];
         end
 
         % Start returning

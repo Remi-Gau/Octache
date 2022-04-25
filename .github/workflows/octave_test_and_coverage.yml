@@ -23,7 +23,7 @@ on:
     branches:
       - 'main'
   schedule:
-    - cron: "0 0 1,15 * *"
+    - cron: "0 0 2,16 * *"
 
 on:
   push:
@@ -36,16 +36,28 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get -y -qq update
+          sudo apt-get -y install octave liboctave-dev
+
       - uses: actions/checkout@v3
         with:
           submodules: true
           fetch-depth: 1
+
+      - name: Compile JSONio
+        run: |
+          cd lib/JSONio
+          mkoctfile --mex jsonread.c jsmn.c -DJSMN_PARENT_LINKS
 
       - name: MOxUnit Action
         uses: joergbrech/moxunit-action@v1.1
         with:
           tests: tests
           src: src
+          ext: lib/JSONio # External resources to add to the search put (excluded from coverage)
           with_coverage: true
           cover_xml_file: coverage.xml
 

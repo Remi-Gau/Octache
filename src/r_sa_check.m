@@ -1,7 +1,7 @@
 function status = r_sa_check(template, tag_type, is_standalone)
     %
     % Right standalone check
-    % Do a final checkto see if a tag could be a standalone
+    % Do a final check to see if a tag could be a standalone
     %
     % USAGE::
     %
