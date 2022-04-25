@@ -12,6 +12,36 @@ function test_suite = test_renderer %#ok<*STOUT>
 end
 
 % TODO?
+% function test_renderer_inverted_section()
+%
+%     % GIVEN
+%     [tpl_file, data, expected, partials_path] = setup_test('inverted_section');
+%
+%     % WHEN
+%     output = renderer(tpl_file, ...
+%                       'data', data, ...
+%                       'partials_path', partials_path);
+%     % THEN
+%     assertEqual(output, expected);
+%
+% end
+
+% TODO?
+% function test_renderer_scope()
+%
+%     % GIVEN
+%     [tpl_file, data, expected, partials_path] = setup_test('scope');
+%
+%     % WHEN
+%     output = renderer(tpl_file, ...
+%                       'data', data, ...
+%                       'partials_path', partials_path);
+%     % THEN
+%     assertEqual(output, expected);
+%
+% end
+
+% TODO?
 % function test_renderer_variable()
 %
 %     % GIVEN
