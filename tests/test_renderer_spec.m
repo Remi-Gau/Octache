@@ -158,32 +158,34 @@ function test_renderer_spec_comment()
 
 end
 
-% function test_renderer_spec_inverted()
-%
-%     fprintf(1, '\n');
-%
-%     spec_path = fullfile(path_test(), '..', 'spec', 'specs');
-%
-%     spec = jsonread(fullfile(spec_path, 'inverted.json'));
-%
-%     st = dbstack;
-%     namestr = st.name;
-%
-%     for i = 1:numel(spec.tests)
-%
-%         % GIVEN
-%         subtest = setup_subtest(spec, i);
-%         fprintf(1, ['\t' num2str(i) ' - ' namestr ':' subtest.name '\n']);
-%
-%         % WHEN
-%         output = renderer(subtest.template, ...
-%                           'data', subtest.data);
-%         % THEN
-%         assertEqual(output, subtest.expected);
-%
-%     end
-%
-% end
+function test_renderer_spec_inverted()
+
+    fprintf(1, '\n');
+
+    spec_path = fullfile(path_test(), '..', 'spec', 'specs');
+
+    spec = jsonread(fullfile(spec_path, 'inverted.json'));
+
+    st = dbstack;
+    namestr = st.name;
+
+    % Failing tests
+    % 2:5 7 9 11 18 2
+    for i = [1 6 8 10 12:13 17 22] % 1:numel(spec.tests)
+
+        % GIVEN
+        subtest = setup_subtest(spec, i);
+        fprintf(1, ['\t' num2str(i) ' - ' namestr ':' subtest.name '\n']);
+
+        % WHEN
+        output = renderer(subtest.template, ...
+                          'data', subtest.data);
+        % THEN
+        assertEqual(output, subtest.expected);
+
+    end
+
+end
 
 function subtest = setup_subtest(spec, i)
 

@@ -190,11 +190,6 @@ function output = renderer(varargin)
 
             thing = get_key(key, scopes, warn, keep, l_del, r_del);
 
-            % TODO
-            % If the scope is a callable (as described in
-            % https://mustache.github.io/mustache.5.html)
-
-            % text = '';
             tags = {};
 
             while ~isempty(tokens)
@@ -307,14 +302,8 @@ function output = renderer(varargin)
 
             end
 
-            % If the scope is a sequence, an iterator or generator but not
-            % derived from a string
-            % for i = 1:numel(scopes)
-            %   if isfield(scopes{i}, thing) && scopes{i}.(thing)
-            %   end
-            % end
-
         elseif strcmp(tag, 'inverted section')
+
             % Add the flipped scope to the scopes
             scope = get_key(key, scopes, warn, keep, l_del, r_del);
 
