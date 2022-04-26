@@ -11,6 +11,32 @@ function test_suite = test_tokenize %#ok<*STOUT>
 
 end
 
+function test_tokenize_end_tokenize_space()
+
+    % GIVEN
+    template = ['  {{data}}  {{> partial}}', newline];
+
+    % WHEN
+    tokens = tokenize(template);
+
+    % THEN
+    assertEqual(tokens{3, 2}, '  ');
+
+end
+
+function test_tokenize_end_with_newline()
+
+    % GIVEN
+    template = ['{{>foo}}' newline];
+
+    % WHEN
+    tokens = tokenize(template);
+
+    % THEN
+    assertEqual(tokens{end, 2}, newline);
+
+end
+
 function test_tokenize_comment()
 
     % GIVEN

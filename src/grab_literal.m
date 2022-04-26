@@ -20,7 +20,7 @@ function [literal, template] = grab_literal(template, l_del)
         CURRENT_LINE = CURRENT_LINE + numel(new_lines);
 
         % There are no more tags in the template?
-    catch % ValueError:
+    catch ME
         % Then the rest of the template is a literal
         literal = template;
         template = '';

@@ -139,11 +139,13 @@ function tokens = tokenize(varargin)
         % Which if we are
         if is_standalone
             % Remove the stuff before the newline
-            tmp = regexp(template, newline, 'split', 'once');
-            if numel(tmp) == 2
-                template = tmp{2};
-            else
-                template = tmp{1};
+            if ~strcmp(template, newline)
+                tmp = regexp(template, newline, 'split', 'once');
+                if numel(tmp) == 2
+                    template = tmp{2};
+                else
+                    template = tmp{1};
+                end
             end
 
             % Partials need to keep the spaces on their left
@@ -153,7 +155,7 @@ function tokens = tokenize(varargin)
             end
 
             % Remove spaces after linebreak and before standalone
-            if ~is_first && strcmp(tag_type, 'comment')
+            if ~is_first && ismember(tag_type, {'comment'})
                 tmp = regexp(literal, newline, 'split');
                 tmp{end} = strip(tmp{end}, 'left');
                 literal = strjoin(tmp, newline);

@@ -127,20 +127,19 @@ function test_renderer_unicode()
 
 end
 
-% TODO
-% function test_renderer_section_falsy()
-%
-%     % GIVEN
-%     [tpl_file, data, expected, partials_path] = setup_test('section_falsy');
-%
-%     % WHEN
-%     output = renderer(tpl_file, ...
-%                       'data', data, ...
-%                       'partials_path', partials_path);
-%     % THEN
-%     assertEqual(output, expected);
-%
-% end
+function test_renderer_section_falsy()
+
+    % GIVEN
+    [tpl_file, data, expected, partials_path] = setup_test('section_falsy');
+
+    % WHEN
+    output = renderer(tpl_file, ...
+                      'data', data, ...
+                      'partials_path', partials_path);
+    % THEN
+    assertEqual(output, expected);
+
+end
 
 % TODO
 % function test_renderer_delimiter()
