@@ -156,21 +156,20 @@ end
 %
 % end
 
-% TODO
-% function test_renderer_partial()
-%
-%     % GIVEN
-%     [tpl_file, data, expected, partials_path] = setup_test('partial');
-%
-%     % WHEN
-%     output = renderer(tpl_file, ...
-%                       'data', data, ...
-%                       'partials_path', partials_path, ...
-%                       'keep', false);
-%     % THEN
-%     assertEqual(output, expected);
-%
-% end
+function test_renderer_partial()
+
+    % GIVEN
+    [tpl_file, data, expected, partials_path] = setup_test('partial');
+
+    % WHEN
+    output = renderer(tpl_file, ...
+                      'data', data, ...
+                      'partials_path', partials_path, ...
+                      'keep', false);
+    % THEN
+    assertEqual(output, expected);
+
+end
 
 % TODO
 % function test_renderer_list()

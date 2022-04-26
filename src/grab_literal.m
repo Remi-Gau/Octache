@@ -13,9 +13,10 @@ function [literal, template] = grab_literal(template, l_del)
 
     try
         % Look for the next tag and move the template to it
-        tmp = regexp(template, l_del, 'split', 'once');
+        % tmp = regexp(template, l_del, 'split', 'once');
+        tmp = strsplit(template, l_del);
         literal = tmp{1};
-        template = tmp{2};
+        template = strjoin(tmp(2:end), l_del);
         new_lines = regexp(literal, newlinebreak, 'match');
         CURRENT_LINE = CURRENT_LINE + numel(new_lines);
 

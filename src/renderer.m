@@ -128,7 +128,7 @@ function output = renderer(varargin)
 
         if strcmp(tag, 'end')
             % Pop out of the latest scope
-            scopes(1) = [];
+            % scopes(1) = [];
 
             % If the current scope is falsy and not the only scope
             % elseif not current_scope && length(scopes) ~= 1

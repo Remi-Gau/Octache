@@ -11,6 +11,35 @@ function test_suite = test_renderer_spec %#ok<*STOUT>
 
 end
 
+function test_renderer_spec_delimiters()
+
+    fprintf(1, '\n');
+
+    spec_path = fullfile(path_test(), '..', 'spec', 'specs');
+
+    spec = jsonread(fullfile(spec_path, 'delimiters.json'));
+
+    st = dbstack;
+    namestr = st.name;
+
+    % Failing tests
+    % 3, 4, 5, 6, 10, 13
+    for i = [1:2, 7:9, 11:12, 14] % 1:numel(spec.tests)
+
+        % GIVEN
+        subtest = setup_subtest(spec, i);
+        fprintf(1, ['\t' num2str(i) ' - ' namestr ':' subtest.name '\n']);
+
+        % WHEN
+        output = renderer(subtest.template, ...
+                          'data', subtest.data);
+        % THEN
+        assertEqual(output, subtest.expected);
+
+    end
+
+end
+
 function test_renderer_spec_sections()
 
     fprintf(1, '\n');
@@ -22,6 +51,7 @@ function test_renderer_spec_sections()
     st = dbstack;
     namestr = st.name;
 
+    % Failing tests
     % 7, 8, 9, 11, 13, 15, 16, 17, 18, 22, 23, 24, 26, 27, 29
     for i = [1:6, 10, 12, 14, 19:21, 28, 30] % 1:numel(spec.tests)
 
@@ -51,6 +81,7 @@ function test_renderer_spec_interpolation()
     st = dbstack;
     namestr = st.name;
 
+    % Failing tests
     % 25
     for i = [1:24, 26:39] % 1:numel(spec.tests)
 
@@ -81,7 +112,8 @@ function test_renderer_spec_partials()
     st = dbstack;
     namestr = st.name;
 
-    % Failing 8, 9, 10
+    % Failing tests
+    % 8, 9, 10
     for i = [1:7, 11] % 1:numel(spec.tests)
 
         % GIVEN
@@ -125,33 +157,6 @@ function test_renderer_spec_comment()
     end
 
 end
-
-% function test_renderer_spec_delimiters()
-%
-%     fprintf(1, '\n');
-%
-%     spec_path = fullfile(path_test(), '..', 'spec', 'specs');
-%
-%     spec = jsonread(fullfile(spec_path, 'delimiters.json'));
-%
-%     st = dbstack;
-%     namestr = st.name;
-%
-%     for i = 1:numel(spec.tests)
-%
-%         % GIVEN
-%         subtest = setup_subtest(spec, i);
-%         fprintf(1, ['\t' num2str(i) ' - ' namestr ':' subtest.name '\n']);
-%
-%         % WHEN
-%         output = renderer(subtest.template, ...
-%                           'data', subtest.data);
-%         % THEN
-%         assertEqual(output, subtest.expected);
-%
-%     end
-%
-% end
 
 % function test_renderer_spec_inverted()
 %
