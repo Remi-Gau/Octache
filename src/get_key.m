@@ -59,7 +59,7 @@ function output = get_key(key, scopes, warn, keep, l_del, r_del)
         output = '';
 
         if warn
-            warning('Could not find key %s', key);
+            warning('Could not find key ''%s''', key);
         end
 
         if keep

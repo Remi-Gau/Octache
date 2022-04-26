@@ -163,14 +163,6 @@ function tokens = tokenize(varargin)
 
         end
 
-        % Standalone tags should not require a newlinebreak to precede them.
-        if ~strcmp(literal, '') && ...
-            was_standalone && ...
-            isempty(tokens) && ...
-            strcmp(literal(1), newlinebreak)
-            literal(1) = [];
-        end
-
         % Start returning
         % Ignore literals that are empty
         if ~strcmp(literal, '')
