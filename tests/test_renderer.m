@@ -11,6 +11,20 @@ function test_suite = test_renderer %#ok<*STOUT>
 
 end
 
+function test_renderer_delimiter()
+
+    % GIVEN
+    [tpl_file, data, expected, partials_path] = setup_test('delimiter');
+
+    % WHEN
+    output = renderer(tpl_file, ...
+                      'data', data, ...
+                      'partials_path', partials_path);
+    % THEN
+    assertEqual(output, expected);
+
+end
+
 function test_renderer_section_list()
 
     % GIVEN
@@ -69,20 +83,19 @@ end
 %
 % end
 
-% TODO?
-% function test_renderer_variable()
-%
-%     % GIVEN
-%     [tpl_file, data, expected, partials_path] = setup_test('variable');
-%
-%     % WHEN
-%     output = renderer(tpl_file, ...
-%                       'data', data, ...
-%                       'partials_path', partials_path);
-%     % THEN
-%     assertEqual(output, expected);
-%
-% end
+function test_renderer_variable()
+
+    % GIVEN
+    [tpl_file, data, expected, partials_path] = setup_test('variable');
+
+    % WHEN
+    output = renderer(tpl_file, ...
+                      'data', data, ...
+                      'partials_path', partials_path);
+    % THEN
+    assertEqual(output, expected);
+
+end
 
 function test_renderer_unicode_no_escape()
 
@@ -155,21 +168,6 @@ function test_renderer_section_falsy()
 
 end
 
-% TODO
-% function test_renderer_delimiter()
-%
-%     % GIVEN
-%     [tpl_file, data, expected, partials_path] = setup_test('delimiter');
-%
-%     % WHEN
-%     output = renderer(tpl_file, ...
-%                       'data', data, ...
-%                       'partials_path', partials_path);
-%     % THEN
-%     assertEqual(output, expected);
-%
-% end
-
 function test_renderer_partial()
 
     % GIVEN
@@ -185,20 +183,19 @@ function test_renderer_partial()
 
 end
 
-% TODO
-% function test_renderer_list()
-%
-%     % GIVEN
-%     [tpl_file, data, expected, partials_path] = setup_test('list');
-%
-%     % WHEN
-%     output = renderer(tpl_file, ...
-%                       'data', data, ...
-%                       'partials_path', partials_path);
-%     % THEN
-%     assertEqual(output, expected);
-%
-% end
+function test_renderer_list()
+
+    % GIVEN
+    [tpl_file, data, expected, partials_path] = setup_test('list');
+
+    % WHEN
+    output = renderer(tpl_file, ...
+                      'data', data, ...
+                      'partials_path', partials_path);
+    % THEN
+    assertEqual(output, expected);
+
+end
 
 function test_renderer_html_escape_normal()
 

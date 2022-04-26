@@ -53,8 +53,8 @@ function test_renderer_spec_delimiters()
     namestr = st.name;
 
     % Failing tests
-    % 3, 4, 5, 6, 10, 13
-    for i = [1:2, 7:9, 11:12, 14] % 1:numel(spec.tests)
+    % 5, 6, 10, 13
+    for i = 5 % [1:4, 7:9, 11:12, 14] % 1:numel(spec.tests)
 
         % GIVEN
         subtest = setup_subtest(spec, i);

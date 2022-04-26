@@ -11,7 +11,22 @@ function test_suite = test_tokenize %#ok<*STOUT>
 
 end
 
-function test_tokenize_delimiters()
+function test_tokenize_delimiters_2()
+
+    % GIVEN
+    template = ['===', newlinebreak, ...
+                '{{= | | =}}', newlinebreak, ...
+                '|test|', newlinebreak, ...
+                '|= {{ }} =|', newlinebreak, ...
+                'test'];
+
+    % WHEN
+    tokens = tokenize(template);
+
+    assertEqual(tokens{4, 2}, newlinebreak);
+end
+
+function test_tokenize_delimiters_1()
 
     % GIVEN
     template = ['[', newlinebreak, ...
@@ -30,7 +45,8 @@ function test_tokenize_delimiters()
     tokens = tokenize(template);
 
     % THEN
-    assertEqual(tokens{8, 2}, 'section');
+    assertEqual(tokens{9, 1}, 'section');
+    assertEqual(tokens{9, 2}, 'section');
 
 end
 

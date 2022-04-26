@@ -84,9 +84,6 @@ function tokens = tokenize(varargin)
             break
         end
 
-        % track previous
-        was_standalone = is_standalone;
-
         % Do the first check to see if we could be a standalone
         is_standalone = l_sa_check(literal, is_standalone);
 
@@ -148,10 +145,13 @@ function tokens = tokenize(varargin)
                 end
             end
 
-            % Partials need to keep the spaces on their left
+            % Partials need to keep the spaces on their left but other tags don't
             if ~strcmp(tag_type, 'partial')
-                % But other tags don't
-                literal = strip(literal, 'left');
+                % Cannot use strip only as it turns newline into empty string
+                % because REASONS (???!!!)
+                tmp = strsplit(literal, newlinebreak);
+                tmp{1} = strip(tmp{1}, 'left');
+                literal = strjoin(tmp, newlinebreak);
             end
 
             % Remove spaces after linebreak and before standalone
