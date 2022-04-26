@@ -155,7 +155,7 @@ function tokens = tokenize(varargin)
             end
 
             % Remove spaces after linebreak and before standalone
-            if ~is_first && ismember(tag_type, {'comment'})
+            if ~is_first && ismember(tag_type, {'comment', 'set delimiter'})
                 tmp = regexp(literal, newlinebreak, 'split');
                 tmp{end} = strip(tmp{end}, 'left');
                 literal = strjoin(tmp, newlinebreak);

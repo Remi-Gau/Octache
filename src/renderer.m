@@ -344,7 +344,7 @@ function output = renderer(varargin)
 
         end
 
-        %         output
+        % output
 
     end
 

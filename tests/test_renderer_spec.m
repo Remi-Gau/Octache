@@ -15,31 +15,30 @@ function test_renderer_spec_delimiters()
 
     fprintf(1, '\n');
 
-    spec_path = fullfile(path_test(), '..', 'spec', 'specs');
-
-    spec = jsonread(fullfile(spec_path, 'delimiters.json'));
+    spec = jsonread(fullfile(spec_path(), 'delimiters.json'));
 
     st = dbstack;
-    namestr = st.name;
 
     % Failing tests
-    % 5, 10, 13
-    for i = [1:4, 6:9, 11:12, 14] % 1:numel(spec.tests)
+    % 5
+    for i = [1:4, 6:10, 11:14] % 1:numel(spec.tests)
 
         % GIVEN
         subtest = setup_subtest(spec, i);
-        fprintf(1, ['\t' num2str(i) ' - ' namestr ':' subtest.name '\n']);
+        fprintf(1, ['\t' num2str(i) ' - ' st.name ':' subtest.name '\n']);
 
         % WHEN
         if isfield(subtest, 'partials_dict')
             output = renderer(subtest.template, ...
                               'data', subtest.data, ...
                               'keep', false, ...
-                              'partials_dict', subtest.partials_dict);
+                              'partials_dict', subtest.partials_dict, ...
+                              'warn', false);
         else
             output = renderer(subtest.template, ...
                               'data', subtest.data, ...
-                              'keep', false);
+                              'keep', false, ...
+                              'warn', false);
         end
         % THEN
         assertEqual(output, subtest.expected);
@@ -52,12 +51,9 @@ function test_renderer_spec_sections()
 
     fprintf(1, '\n');
 
-    spec_path = fullfile(path_test(), '..', 'spec', 'specs');
-
-    spec = jsonread(fullfile(spec_path, 'sections.json'));
+    spec = jsonread(fullfile(spec_path(), 'sections.json'));
 
     st = dbstack;
-    namestr = st.name;
 
     % Failing tests
     % 8, 11, 13, 18, 22, 23, 24, 26, 27, 29
@@ -65,12 +61,13 @@ function test_renderer_spec_sections()
 
         % GIVEN
         subtest = setup_subtest(spec, i);
-        fprintf(1, ['\t' num2str(i) ' - ' namestr ':' subtest.name '\n']);
+        fprintf(1, ['\t' num2str(i) ' - ' st.name ':' subtest.name '\n']);
 
         % WHEN
         output = renderer(subtest.template, ...
                           'data', subtest.data, ...
-                          'keep', false);
+                          'keep', false, ...
+                          'warn', false);
         % THEN
         assertEqual(output, subtest.expected);
 
@@ -82,12 +79,9 @@ function test_renderer_spec_interpolation()
 
     fprintf(1, '\n');
 
-    spec_path = fullfile(path_test(), '..', 'spec', 'specs');
-
-    spec = jsonread(fullfile(spec_path, 'interpolation.json'));
+    spec = jsonread(fullfile(spec_path(), 'interpolation.json'));
 
     st = dbstack;
-    namestr = st.name;
 
     % Failing tests
     % 25
@@ -95,7 +89,7 @@ function test_renderer_spec_interpolation()
 
         % GIVEN
         subtest = setup_subtest(spec, i);
-        fprintf(1, ['\t' num2str(i) ' - ' namestr ':' subtest.name '\n']);
+        fprintf(1, ['\t' num2str(i) ' - ' st.name ':' subtest.name '\n']);
 
         % WHEN
         output = renderer(subtest.template, ...
@@ -113,12 +107,9 @@ function test_renderer_spec_partials()
 
     fprintf(1, '\n');
 
-    spec_path = fullfile(path_test(), '..', 'spec', 'specs');
-
-    spec = jsonread(fullfile(spec_path, 'partials.json'));
+    spec = jsonread(fullfile(spec_path(), 'partials.json'));
 
     st = dbstack;
-    namestr = st.name;
 
     % Failing tests
     % 8, 9, 10
@@ -126,13 +117,14 @@ function test_renderer_spec_partials()
 
         % GIVEN
         subtest = setup_subtest(spec, i);
-        fprintf(1, ['\t' num2str(i) ' - ' namestr ':' subtest.name '\n']);
+        fprintf(1, ['\t' num2str(i) ' - ' st.name ':' subtest.name '\n']);
 
         % WHEN
         output = renderer(subtest.template, ...
                           'data', subtest.data, ...
                           'keep', false, ...
-                          'partials_dict', subtest.partials_dict);
+                          'partials_dict', subtest.partials_dict, ...
+                          'warn', false);
         % THEN
         assertEqual(output, subtest.expected);
 
@@ -144,23 +136,21 @@ function test_renderer_spec_comment()
 
     fprintf(1, '\n');
 
-    spec_path = fullfile(path_test(), '..', 'spec', 'specs');
-
-    spec = jsonread(fullfile(spec_path, 'comments.json'));
+    spec = jsonread(fullfile(spec_path(), 'comments.json'));
 
     st = dbstack;
-    namestr = st.name;
 
     for i = 1:numel(spec.tests)
 
         % GIVEN
         subtest = setup_subtest(spec, i);
-        fprintf(1, ['\t' num2str(i) ' - ' namestr ':' subtest.name '\n']);
+        fprintf(1, ['\t' num2str(i) ' - ' st.name ':' subtest.name '\n']);
 
         % WHEN
         output = renderer(subtest.template, ...
                           'keep', false, ...
-                          'data', subtest.data);
+                          'data', subtest.data, ...
+                          'warn', false);
         % THEN
         assertEqual(output, subtest.expected);
 
@@ -172,30 +162,32 @@ function test_renderer_spec_inverted()
 
     fprintf(1, '\n');
 
-    spec_path = fullfile(path_test(), '..', 'spec', 'specs');
-
-    spec = jsonread(fullfile(spec_path, 'inverted.json'));
+    spec = jsonread(fullfile(spec_path(), 'inverted.json'));
 
     st = dbstack;
-    namestr = st.name;
 
     % Failing tests
-    % 2:5 7 9 11 14:16 18 21
-    for i = [1 6 8 10 12:13 17 19:20 22] % 1:numel(spec.tests)
+    % 2 4 7 9 11 14:16 18 21
+    for i = [1 3 5 6 8 10 12:13 17 19:20 22] % 1:numel(spec.tests)
 
         % GIVEN
         subtest = setup_subtest(spec, i);
-        fprintf(1, ['\t' num2str(i) ' - ' namestr ':' subtest.name '\n']);
+        fprintf(1, ['\t' num2str(i) ' - ' st.name ':' subtest.name '\n']);
 
         % WHEN
         output = renderer(subtest.template, ...
                           'keep', false, ...
-                          'data', subtest.data);
+                          'data', subtest.data, ...
+                          'warn', false);
         % THEN
         assertEqual(output, subtest.expected);
 
     end
 
+end
+
+function pth = spec_path()
+    pth = fullfile(path_test(), '..', 'spec', 'specs');
 end
 
 function subtest = setup_subtest(spec, i)
