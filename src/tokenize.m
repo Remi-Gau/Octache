@@ -53,7 +53,7 @@ function tokens = tokenize(varargin)
 
     args = inputParser;
 
-    args.addRequired('template', @ischar);
+    args.addRequired('template');
     args.addParameter('l_del', '{{', @ischar);
     args.addParameter('r_del', '}}', @ischar);
 

@@ -11,6 +11,20 @@ function test_suite = test_renderer %#ok<*STOUT>
 
 end
 
+function test_renderer_section_list()
+
+    % GIVEN
+    data = struct('list', {{ struct('item', 1), struct('item', 2), struct('item', 3)}});
+    template = '{{#list}}{{item}}{{/list}}';
+
+    % WHEN
+    output = renderer(template, ...
+                      'data', data);
+    % THEN
+    assertEqual(output, '123');
+
+end
+
 function test_renderer_section_truthy()
 
     % GIVEN
@@ -185,28 +199,6 @@ end
 %     assertEqual(output, expected);
 %
 % end
-
-function test_renderer_nested_section()
-
-    template = ['{{#tops}}{{#middles}}{{#bottoms}}', ...
-                '{{tname.upper}}{{mname}}{{bname}}', ...
-                '{{/bottoms}}{{/middles}}{{/tops}}'];
-
-    bottoms(1, 1) = struct('bname', 'x');
-    bottoms(2, 1) = struct('bname', 'x');
-    tops = struct('tname', struct('upper', 'A', ...
-                                  'lower', 'a'), ...
-                  'middles', struct('mname', 1, ...
-                                    'bottoms', bottoms));
-    data = struct('tops', tops);
-
-    % WHEN
-    output = renderer(template, ...
-                      'data', data);
-    % THEN
-    assertEqual(output, 'A1x');
-
-end
 
 function test_renderer_html_escape_normal()
 

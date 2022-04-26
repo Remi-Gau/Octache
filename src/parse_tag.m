@@ -35,7 +35,6 @@ function  [tag_type, tag_key, template] = parse_tag(varargin)
 
     % Get the tag
     try
-        %         tmp = regexp(template, r_del, 'split', 'once');
         tmp = strsplit(template, r_del);
         tag = tmp{1};
         template = strjoin(tmp(2:end), r_del);

@@ -11,6 +11,36 @@ function test_suite = test_renderer_spec %#ok<*STOUT>
 
 end
 
+function test_renderer_spec_sections()
+
+    fprintf(1, '\n');
+
+    spec_path = fullfile(path_test(), '..', 'spec', 'specs');
+
+    spec = jsonread(fullfile(spec_path, 'sections.json'));
+
+    st = dbstack;
+    namestr = st.name;
+
+    % Failing tests
+    % 8, 11, 13, 18, 22, 23, 24, 26, 27, 29
+    for i = [1:7, 9:10, 12, 14:17, 19:21, 28, 30] % 1:numel(spec.tests)
+
+        % GIVEN
+        subtest = setup_subtest(spec, i);
+        fprintf(1, ['\t' num2str(i) ' - ' namestr ':' subtest.name '\n']);
+
+        % WHEN
+        output = renderer(subtest.template, ...
+                          'data', subtest.data, ...
+                          'keep', false);
+        % THEN
+        assertEqual(output, subtest.expected);
+
+    end
+
+end
+
 function test_renderer_spec_delimiters()
 
     fprintf(1, '\n');
@@ -33,36 +63,6 @@ function test_renderer_spec_delimiters()
         % WHEN
         output = renderer(subtest.template, ...
                           'data', subtest.data);
-        % THEN
-        assertEqual(output, subtest.expected);
-
-    end
-
-end
-
-function test_renderer_spec_sections()
-
-    fprintf(1, '\n');
-
-    spec_path = fullfile(path_test(), '..', 'spec', 'specs');
-
-    spec = jsonread(fullfile(spec_path, 'sections.json'));
-
-    st = dbstack;
-    namestr = st.name;
-
-    % Failing tests
-    % 7, 8, 9, 11, 13, 15, 16, 17, 18, 22, 23, 24, 26, 27, 29
-    for i = [1:6, 10, 12, 14, 19:21, 28, 30] % 1:numel(spec.tests)
-
-        % GIVEN
-        subtest = setup_subtest(spec, i);
-        fprintf(1, ['\t' num2str(i) ' - ' namestr ':' subtest.name '\n']);
-
-        % WHEN
-        output = renderer(subtest.template, ...
-                          'data', subtest.data, ...
-                          'keep', false);
         % THEN
         assertEqual(output, subtest.expected);
 
