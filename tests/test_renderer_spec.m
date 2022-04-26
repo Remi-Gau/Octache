@@ -11,6 +11,43 @@ function test_suite = test_renderer_spec %#ok<*STOUT>
 
 end
 
+function test_renderer_spec_delimiters()
+
+    fprintf(1, '\n');
+
+    spec_path = fullfile(path_test(), '..', 'spec', 'specs');
+
+    spec = jsonread(fullfile(spec_path, 'delimiters.json'));
+
+    st = dbstack;
+    namestr = st.name;
+
+    % Failing tests
+    % 5, 10, 13
+    for i = [1:4, 6:9, 11:12, 14] % 1:numel(spec.tests)
+
+        % GIVEN
+        subtest = setup_subtest(spec, i);
+        fprintf(1, ['\t' num2str(i) ' - ' namestr ':' subtest.name '\n']);
+
+        % WHEN
+        if isfield(subtest, 'partials_dict')
+            output = renderer(subtest.template, ...
+                              'data', subtest.data, ...
+                              'keep', false, ...
+                              'partials_dict', subtest.partials_dict);
+        else
+            output = renderer(subtest.template, ...
+                              'data', subtest.data, ...
+                              'keep', false);
+        end
+        % THEN
+        assertEqual(output, subtest.expected);
+
+    end
+
+end
+
 function test_renderer_spec_sections()
 
     fprintf(1, '\n');
@@ -34,35 +71,6 @@ function test_renderer_spec_sections()
         output = renderer(subtest.template, ...
                           'data', subtest.data, ...
                           'keep', false);
-        % THEN
-        assertEqual(output, subtest.expected);
-
-    end
-
-end
-
-function test_renderer_spec_delimiters()
-
-    fprintf(1, '\n');
-
-    spec_path = fullfile(path_test(), '..', 'spec', 'specs');
-
-    spec = jsonread(fullfile(spec_path, 'delimiters.json'));
-
-    st = dbstack;
-    namestr = st.name;
-
-    % Failing tests
-    % 5, 6, 10, 13
-    for i = 5 % [1:4, 7:9, 11:12, 14] % 1:numel(spec.tests)
-
-        % GIVEN
-        subtest = setup_subtest(spec, i);
-        fprintf(1, ['\t' num2str(i) ' - ' namestr ':' subtest.name '\n']);
-
-        % WHEN
-        output = renderer(subtest.template, ...
-                          'data', subtest.data);
         % THEN
         assertEqual(output, subtest.expected);
 
@@ -123,6 +131,7 @@ function test_renderer_spec_partials()
         % WHEN
         output = renderer(subtest.template, ...
                           'data', subtest.data, ...
+                          'keep', false, ...
                           'partials_dict', subtest.partials_dict);
         % THEN
         assertEqual(output, subtest.expected);
@@ -150,6 +159,7 @@ function test_renderer_spec_comment()
 
         % WHEN
         output = renderer(subtest.template, ...
+                          'keep', false, ...
                           'data', subtest.data);
         % THEN
         assertEqual(output, subtest.expected);
@@ -179,6 +189,7 @@ function test_renderer_spec_inverted()
 
         % WHEN
         output = renderer(subtest.template, ...
+                          'keep', false, ...
                           'data', subtest.data);
         % THEN
         assertEqual(output, subtest.expected);
