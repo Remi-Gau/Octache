@@ -153,6 +153,25 @@ function output = renderer(varargin)
             % then get the un-coerced object (next in the stack)
             %     thing = scopes[1]
 
+            if isnumeric(thing)
+                thing = num2str(thing);
+
+            elseif isstruct(thing)
+                % in case we get a scope and not a value, try to list its content
+                % TODO what if the scope contains a structure or something else
+                % than a string
+                fields = fieldnames(thing);
+                tmp = '';
+                for i = 1:numel(fields)
+                    if ischar(thing.(fields{i}))
+                        tmp = [tmp, thing.(fields{i})];
+                    end
+                end
+                thing =  tmp;
+                clear tmp;
+
+            end
+
             output = [output, html_escape(thing)];
 
             % If we're a no html escape tag

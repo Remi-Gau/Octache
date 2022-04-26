@@ -11,9 +11,6 @@ function string = html_escape(string)
                   '>', '&gt;'};
 
     % & must be handled first
-    if isnumeric(string)
-        string = num2str(string);
-    end
     string = strrep(string, '&', '&amp;');
 
     for i = 1:size(html_codes, 1)
