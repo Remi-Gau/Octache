@@ -75,7 +75,7 @@ function output = renderer(varargin)
 
     args = inputParser;
 
-    args.addRequired('template', @ischar);
+    args.addRequired('template');
     args.addParameter('data', '');
     args.addParameter('partials_path', pwd, @isdir);
     args.addParameter('partials_ext', 'mustache', @ischar);
@@ -107,13 +107,21 @@ function output = renderer(varargin)
         scopes = {data};
     end
 
-    tokens = tokenize(template, 'l_del', l_del, 'r_del', r_del);
+    if iscell(template) && size(template, 2) == 2
+        % allows recursive calls when dealing with sections
+        tokens = template;
 
-    % Run through the tokens
-    for token_idx = 1:size(tokens, 1)
+    else
+        tokens = tokenize(template, 'l_del', l_del, 'r_del', r_del);
 
-        tag = tokens{token_idx, 1};
-        key = tokens{token_idx, 2};
+    end
+
+    % Run through the tokens as a stash we pop things from
+    while ~isempty(tokens)
+
+        tag = tokens{1, 1};
+        key = tokens{1, 2};
+        tokens(1, :) = [];
 
         % Set the current scope
         % current_scope = scopes{1};
@@ -144,8 +152,6 @@ function output = renderer(varargin)
             % (inverted tags do this)
             % then get the un-coerced object (next in the stack)
             %     thing = scopes[1]
-            % if not isinstance(thing, unicode_type):
-            %     thing = unicode(str(thing), 'utf-8')
 
             output = [output, html_escape(thing)];
 
@@ -154,15 +160,66 @@ function output = renderer(varargin)
             % Just lookup the key and add it
             thing = get_key(key, scopes, warn, keep, l_del, r_del);
 
-            % TODO unicode check
-            % if not isinstance(thing, unicode_type):
-            %     thing = unicode(str(thing), 'utf-8')
+            if isnumeric(thing)
+                thing = num2str(thing);
+            end
 
             output = [output, thing];
 
             % If we're a section tag
         elseif strcmp(tag, 'section')
+
+            thing = get_key(key, scopes, warn, keep, l_del, r_del);
+
             % TODO
+            % If the scope is a callable (as described in
+            % https://mustache.github.io/mustache.5.html)
+
+            if isstruct(thing)
+                scopes = cat(1, {thing}, scopes);
+            end
+
+            % text = '';
+            tags = {};
+
+            while ~isempty(tokens)
+
+                section_tag = tokens{1, 1};
+                section_key = tokens{1, 2};
+                tokens(1, :) = [];
+
+                if strcmp(section_tag, 'end')
+                    break
+                end
+
+                tags{end + 1, 1} = section_tag;
+                tags{end, 2} = section_key;
+
+            end
+
+            text = renderer(tags, ...
+                            'scopes', scopes, ...
+                            'partials_path', partials_path, ...
+                            'partials_ext', partials_ext, ...
+                            'l_del', l_del, ...
+                            'r_del', r_del, ...
+                            'padding', padding, ...
+                            'partials_dict', partials_dict, ...
+                            'warn', warn, ...
+                            'keep', keep);
+
+            if isstruct(thing)
+                output = [output, text];
+            elseif thing
+                output = [output, text];
+            end
+
+            % If the scope is a sequence, an iterator or generator but not
+            % derived from a string
+            % for i = 1:numel(scopes)
+            %   if isfield(scopes{i}, thing) && scopes{i}.(thing)
+            %   end
+            % end
 
             % If we're an inverted section
         elseif strcmp(tag, 'inverted section')
@@ -206,6 +263,7 @@ function output = renderer(varargin)
             output = [output, part_out];
 
         end
+
     end
 
 end

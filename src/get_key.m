@@ -14,11 +14,27 @@ function value = get_key(key, scopes, warn, keep, l_del, r_del)
         return
     end
 
-    % Loop through the scopes
-    for idx = 1:numel(scopes)
+    sub_keys = strsplit(key, '.');
 
-        if isfield(scopes{idx}, key)
-            value = scopes{idx}.(key);
+    key_found = false;
+
+    for idx_scope = 1:numel(scopes)
+
+        scope = scopes{idx_scope};
+
+        for i = 1:numel(sub_keys)
+
+            if isfield(scope, sub_keys{i})
+                scope = scope.(sub_keys{i});
+                if i == numel(sub_keys)
+                    value = scope;
+                    key_found = true;
+                end
+            end
+
+        end
+
+        if key_found
             break
         end
 
