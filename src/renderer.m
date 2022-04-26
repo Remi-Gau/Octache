@@ -126,10 +126,9 @@ function output = renderer(varargin)
         % Set the current scope
         % current_scope = scopes{1};
 
-        % If we're an end tag
         if strcmp(tag, 'end')
             % Pop out of the latest scope
-            % scopes(1) = [];
+            scopes(1) = [];
 
             % If the current scope is falsy and not the only scope
             % elseif not current_scope && length(scopes) ~= 1
@@ -138,12 +137,10 @@ function output = renderer(varargin)
             %         % (I heard False is a good one)
             %         scopes.insert(0, False)
 
-            % If we're a literal tag
         elseif strcmp(tag, 'literal')
             % Add padding to the key and add it to the output
             output = [output, strrep(key, '\n', ['\n',  padding])];
 
-            % If we're a variable tag
         elseif strcmp(tag, 'variable')
             % Add the html escaped key to the output
             thing = get_key(key, scopes, warn, keep, l_del, r_del);
@@ -165,10 +162,15 @@ function output = renderer(varargin)
                 for i = 1:numel(fields)
                     if ischar(thing.(fields{i}))
                         tmp = [tmp, thing.(fields{i})];
+                    elseif isnumeric(thing.(fields{i}))
+                        tmp = [tmp, num2str(thing.(fields{i}))];
                     end
                 end
                 thing =  tmp;
                 clear tmp;
+
+            elseif iscell(thing)
+                thing = strjoin(thing);
 
             end
 
@@ -185,7 +187,6 @@ function output = renderer(varargin)
 
             output = [output, thing];
 
-            % If we're a section tag
         elseif strcmp(tag, 'section')
 
             thing = get_key(key, scopes, warn, keep, l_del, r_del);
@@ -193,10 +194,6 @@ function output = renderer(varargin)
             % TODO
             % If the scope is a callable (as described in
             % https://mustache.github.io/mustache.5.html)
-
-            if isstruct(thing)
-                scopes = cat(1, {thing}, scopes);
-            end
 
             % text = '';
             tags = {};
@@ -216,21 +213,34 @@ function output = renderer(varargin)
 
             end
 
-            text = renderer(tags, ...
-                            'scopes', scopes, ...
-                            'partials_path', partials_path, ...
-                            'partials_ext', partials_ext, ...
-                            'l_del', l_del, ...
-                            'r_del', r_del, ...
-                            'padding', padding, ...
-                            'partials_dict', partials_dict, ...
-                            'warn', warn, ...
-                            'keep', keep);
+            if isempty(thing)
 
-            if isstruct(thing)
+                text = '';
                 output = [output, text];
-            elseif thing
-                output = [output, text];
+
+            else
+
+                if isstruct(thing)
+                    scopes = cat(1, {thing}, scopes);
+                end
+
+                text = renderer(tags, ...
+                                'scopes', scopes, ...
+                                'partials_path', partials_path, ...
+                                'partials_ext', partials_ext, ...
+                                'l_del', l_del, ...
+                                'r_del', r_del, ...
+                                'padding', padding, ...
+                                'partials_dict', partials_dict, ...
+                                'warn', warn, ...
+                                'keep', keep);
+
+                if isstruct(thing)
+                    output = [output, text];
+                elseif thing
+                    output = [output, text];
+                end
+
             end
 
             % If the scope is a sequence, an iterator or generator but not
@@ -240,7 +250,6 @@ function output = renderer(varargin)
             %   end
             % end
 
-            % If we're an inverted section
         elseif strcmp(tag, 'inverted section')
             % Add the flipped scope to the scopes
             scope = get_key(key, scopes, warn, keep, l_del, r_del);
@@ -248,9 +257,8 @@ function output = renderer(varargin)
             % TODO
             % scopes.insert(0, not scope)
 
-            % If we're a partial
         elseif strcmp(tag, 'partial')
-            % Load the partial
+
             partial = get_partial(key, partials_dict, partials_path, partials_ext);
 
             % Find what to pad the partial with
@@ -261,7 +269,6 @@ function output = renderer(varargin)
             %             end
 
             % Render the partial
-            % TODO use partials dicts?
             part_out =  renderer(partial, ...
                                  'partials_path', partials_path, ...
                                  'partials_ext', partials_ext, ...
@@ -269,6 +276,7 @@ function output = renderer(varargin)
                                  'l_del', l_del, ...
                                  'r_del', r_del, ...
                                  'padding', padding, ...
+                                 'partials_dict', partials_dict, ...
                                  'warn', warn, ...
                                  'keep', keep);
 

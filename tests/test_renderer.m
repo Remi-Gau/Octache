@@ -11,6 +11,20 @@ function test_suite = test_renderer %#ok<*STOUT>
 
 end
 
+function test_renderer_section_truthy()
+
+    % GIVEN
+    [tpl_file, data, expected, partials_path] = setup_test('section_truthy');
+
+    % WHEN
+    output = renderer(tpl_file, ...
+                      'data', data, ...
+                      'partials_path', partials_path);
+    % THEN
+    assertEqual(output, expected);
+
+end
+
 % TODO?
 % function test_renderer_inverted_section()
 %
@@ -128,20 +142,6 @@ end
 %
 % end
 
-function test_renderer_section_truthy()
-
-    % GIVEN
-    [tpl_file, data, expected, partials_path] = setup_test('section_truthy');
-
-    % WHEN
-    output = renderer(tpl_file, ...
-                      'data', data, ...
-                      'partials_path', partials_path);
-    % THEN
-    assertEqual(output, expected);
-
-end
-
 % TODO
 % function test_renderer_delimiter()
 %
@@ -187,6 +187,28 @@ end
 %     assertEqual(output, expected);
 %
 % end
+
+function test_renderer_nested_section()
+
+    template = ['{{#tops}}{{#middles}}{{#bottoms}}', ...
+                '{{tname.upper}}{{mname}}{{bname}}', ...
+                '{{/bottoms}}{{/middles}}{{/tops}}'];
+
+    bottoms(1, 1) = struct('bname', 'x');
+    bottoms(2, 1) = struct('bname', 'x');
+    tops = struct('tname', struct('upper', 'A', ...
+                                  'lower', 'a'), ...
+                  'middles', struct('mname', 1, ...
+                                    'bottoms', bottoms));
+    data = struct('tops', tops);
+
+    % WHEN
+    output = renderer(template, ...
+                      'data', data);
+    % THEN
+    assertEqual(output, 'A1x');
+
+end
 
 function test_renderer_html_escape_normal()
 
