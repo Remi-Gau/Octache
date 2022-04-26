@@ -24,7 +24,7 @@ function test_get_partial_basic()
     partial = get_partial('partial', partials_dict, partials_path, partials_ext);
 
     % THEN
-    assertEqual(partial, ['this is a partial{{excited}}' newline]);
+    assertEqual(partial, ['this is a partial{{excited}}' newlinebreak]);
 
 end
 

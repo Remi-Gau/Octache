@@ -12,6 +12,8 @@ function run_tests()
 
     cd(fileparts(mfilename('fullpath')));
 
+    setup();
+
     fprintf('\nHome is %s\n', getenv('HOME'));
 
     folder_to_cover = fullfile(pwd, 'src');

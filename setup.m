@@ -13,6 +13,8 @@ function setup()
     %
     % (C) Copyright 2022 Remi Gau
 
+    more;
+
     octave_min_version = '4.0.3';
     matlab_min_version = '8.6.0';
 

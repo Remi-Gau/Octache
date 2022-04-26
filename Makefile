@@ -61,3 +61,10 @@ lint: ## lint and checks matlab code
 coverage: run_tests.m ## runs tests and display coverage
 	$(MATLAB) $(MATLAB_ARG) -r "run_tests; exit()"
 	$(BROWSER) coverage_html/index.html
+
+################################################################################
+# 	OCTAVE
+
+install_octave: lib/JSONio/jsonread.c lib/JSONio/jsmn.c
+    cd lib/JSONio
+    mkoctfile --mex jsonread.c jsmn.c -DJSMN_PARENT_LINKS

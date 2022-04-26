@@ -14,7 +14,7 @@ end
 function test_tokenize_end_tokenize_space()
 
     % GIVEN
-    template = ['  {{data}}  {{> partial}}', newline];
+    template = ['  {{data}}  {{> partial}}', newlinebreak];
 
     % WHEN
     tokens = tokenize(template);
@@ -27,13 +27,13 @@ end
 function test_tokenize_end_with_newline()
 
     % GIVEN
-    template = ['{{>foo}}' newline];
+    template = ['{{>foo}}' newlinebreak];
 
     % WHEN
     tokens = tokenize(template);
 
     % THEN
-    assertEqual(tokens{end, 2}, newline);
+    assertEqual(tokens{end, 2}, newlinebreak);
 
 end
 
@@ -46,8 +46,8 @@ function test_tokenize_comment()
     tokens = tokenize(tpl_file);
 
     % THEN
-    expected = {'literal', ['comment test' newline '===' newline]; ...
-                'literal', ['===' newline '===' newline]};
+    expected = {'literal', ['comment test' newlinebreak '===' newlinebreak]; ...
+                'literal', ['===' newlinebreak '===' newlinebreak]};
     assertEqual(tokens, expected);
 
 end
