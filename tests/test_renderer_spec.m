@@ -11,6 +11,34 @@ function test_suite = test_renderer_spec %#ok<*STOUT>
 
 end
 
+function test_renderer_spec_sections()
+
+    fprintf(1, '\n');
+
+    spec = jsonread(fullfile(spec_path(), 'sections.json'));
+
+    st = dbstack;
+
+    % Failing tests
+    % 8, 11, 13, 18, 22, 23, 24, 26, 27, 28, 29
+    for i = [1:7, 9:10, 12, 14:17, 19:21, 30] % 1:numel(spec.tests)
+
+        % GIVEN
+        subtest = setup_subtest(spec, i);
+        fprintf(1, ['\t' num2str(i) ' - ' st.name ':' subtest.name '\n']);
+
+        % WHEN
+        output = renderer(subtest.template, ...
+                          'data', subtest.data, ...
+                          'keep', false, ...
+                          'warn', false);
+        % THEN
+        assertEqual(output, subtest.expected);
+
+    end
+
+end
+
 function test_renderer_spec_delimiters()
 
     fprintf(1, '\n');
@@ -19,9 +47,7 @@ function test_renderer_spec_delimiters()
 
     st = dbstack;
 
-    % Failing tests
-    % 5
-    for i = [1:4, 6:10, 11:14] % 1:numel(spec.tests)
+    for i = 1:numel(spec.tests)
 
         % GIVEN
         subtest = setup_subtest(spec, i);
@@ -40,34 +66,6 @@ function test_renderer_spec_delimiters()
                               'keep', false, ...
                               'warn', false);
         end
-        % THEN
-        assertEqual(output, subtest.expected);
-
-    end
-
-end
-
-function test_renderer_spec_sections()
-
-    fprintf(1, '\n');
-
-    spec = jsonread(fullfile(spec_path(), 'sections.json'));
-
-    st = dbstack;
-
-    % Failing tests
-    % 8, 11, 13, 18, 22, 23, 24, 26, 27, 29
-    for i = [1:7, 9:10, 12, 14:17, 19:21, 28, 30] % 1:numel(spec.tests)
-
-        % GIVEN
-        subtest = setup_subtest(spec, i);
-        fprintf(1, ['\t' num2str(i) ' - ' st.name ':' subtest.name '\n']);
-
-        % WHEN
-        output = renderer(subtest.template, ...
-                          'data', subtest.data, ...
-                          'keep', false, ...
-                          'warn', false);
         % THEN
         assertEqual(output, subtest.expected);
 
@@ -167,8 +165,8 @@ function test_renderer_spec_inverted()
     st = dbstack;
 
     % Failing tests
-    % 2 4 7 9 11 14:16 18 21
-    for i = [1 3 5 6 8 10 12:13 17 19:20 22] % 1:numel(spec.tests)
+    % 2 4 7 9 11 14:16 18 20 21
+    for i = [1 3 5 6 8 10 12:13 17 19 22] % 1:numel(spec.tests)
 
         % GIVEN
         subtest = setup_subtest(spec, i);

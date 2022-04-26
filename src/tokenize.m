@@ -146,7 +146,7 @@ function tokens = tokenize(varargin)
             end
 
             % Partials need to keep the spaces on their left but other tags don't
-            if ~strcmp(tag_type, 'partial')
+            if is_first && ~strcmp(tag_type, 'partial')
                 % Cannot use strip only as it turns newline into empty string
                 % because REASONS (???!!!)
                 tmp = strsplit(literal, newlinebreak);
