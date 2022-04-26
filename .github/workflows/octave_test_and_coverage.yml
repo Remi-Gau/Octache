@@ -35,7 +35,7 @@ jobs:
         with:
           tests: tests
           src: src
-          ext: lib/JSONio # External resources to add to the search put (excluded from coverage)
+          ext: lib/JSONio tests/utils # External resources to add to the search put (excluded from coverage)
           with_coverage: true
           cover_xml_file: coverage.xml
 

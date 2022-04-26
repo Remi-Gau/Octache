@@ -12,14 +12,14 @@ function status = l_sa_check(literal, is_standalone)
 
     status = true;
 
-    % If there is a newline, or the previous tag was a standalone
-    new_lines = regexp(literal, newline, 'match');
+    % If there is a newlinebreak, or the previous tag was a standalone
+    new_lines = regexp(literal, newlinebreak, 'match');
     if ~isempty(new_lines) || is_standalone
 
-        tmp = regexp(literal, newline, 'split');
+        tmp = regexp(literal, newlinebreak, 'split');
         padding = tmp{end};
 
-        % If all the characters since the last newline are spaces
+        % If all the characters since the last newlinebreak are spaces
         if all(isspace(padding)) || strcmp(padding, '')
             % Then the next tag could be a standalone
             status = true;

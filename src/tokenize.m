@@ -138,9 +138,9 @@ function tokens = tokenize(varargin)
 
         % Which if we are
         if is_standalone
-            % Remove the stuff before the newline
-            if ~strcmp(template, newline)
-                tmp = regexp(template, newline, 'split', 'once');
+            % Remove the stuff before the newlinebreak
+            if ~strcmp(template, newlinebreak)
+                tmp = regexp(template, newlinebreak, 'split', 'once');
                 if numel(tmp) == 2
                     template = tmp{2};
                 else
@@ -156,18 +156,18 @@ function tokens = tokenize(varargin)
 
             % Remove spaces after linebreak and before standalone
             if ~is_first && ismember(tag_type, {'comment'})
-                tmp = regexp(literal, newline, 'split');
+                tmp = regexp(literal, newlinebreak, 'split');
                 tmp{end} = strip(tmp{end}, 'left');
-                literal = strjoin(tmp, newline);
+                literal = strjoin(tmp, newlinebreak);
             end
 
         end
 
-        % Standalone tags should not require a newline to precede them.
+        % Standalone tags should not require a newlinebreak to precede them.
         if ~strcmp(literal, '') && ...
             was_standalone && ...
             isempty(tokens) && ...
-            strcmp(literal(1), newline)
+            strcmp(literal(1), newlinebreak)
             literal(1) = [];
         end
 

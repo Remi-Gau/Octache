@@ -16,7 +16,7 @@ function [literal, template] = grab_literal(template, l_del)
         tmp = regexp(template, l_del, 'split', 'once');
         literal = tmp{1};
         template = tmp{2};
-        new_lines = regexp(literal, newline, 'match');
+        new_lines = regexp(literal, newlinebreak, 'match');
         CURRENT_LINE = CURRENT_LINE + numel(new_lines);
 
         % There are no more tags in the template?
