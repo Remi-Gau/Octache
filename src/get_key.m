@@ -18,6 +18,7 @@ function value = get_key(key, scopes, warn, keep, l_del, r_del)
 
     key_found = false;
 
+    % TODO if possible refactor this nested loop
     for idx_scope = 1:numel(scopes)
 
         scope = scopes{idx_scope};
