@@ -11,6 +11,25 @@ function test_suite = test_get_key %#ok<*STOUT>
 
 end
 
+% function test_get_key_empty()
+%
+%     % GIVEN
+%     warn = false;
+%     keep = false;
+%     l_del = '{{';
+%     r_del = '}}';
+%     key = 'b.c';
+%     scopes = {struct('b', struct([]))
+%               struct('a', struct('b', struct([])), 'b', struct('c', 'ERROR'))};
+%
+%     % WHEN
+%     value = get_key(key, scopes, warn, keep, l_del, r_del);
+%
+%     % THEN
+%     assert(isempty(value));
+%
+% end
+
 function test_get_key_dot()
 
     % GIVEN
