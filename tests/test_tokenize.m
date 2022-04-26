@@ -47,7 +47,7 @@ function test_tokenize_comment()
 
     % THEN
     expected = {'literal', ['comment test' newline '===' newline]; ...
-                'literal', ['===' newline '===']};
+                'literal', ['===' newline '===' newline]};
     assertEqual(tokens, expected);
 
 end
