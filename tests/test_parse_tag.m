@@ -11,6 +11,26 @@ function test_suite = test_parse_tag %#ok<*STOUT>
 
 end
 
+function test_parse_tag_error_unclosed_tag()
+
+    % GIVEN
+    template = '#foo';
+
+    % WHEN
+    assertExceptionThrown(@() parse_tag(template), 'Octache:parse_tag:unclosedTag');
+
+end
+
+function test_parse_tag_error_unclosed_delimiter_tag()
+
+    % GIVEN
+    template = '=||}} foo';
+
+    % WHEN
+    assertExceptionThrown(@() parse_tag(template), 'Octache:parse_tag:unclosedDelimiterTag');
+
+end
+
 function test_parse_tag_basic()
 
     % GIVEN
