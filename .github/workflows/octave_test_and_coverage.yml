@@ -31,7 +31,7 @@ jobs:
           mkoctfile --mex jsonread.c jsmn.c -DJSMN_PARENT_LINKS
 
       - name: MOxUnit Action
-        uses: joergbrech/moxunit-action@v1.1
+        uses: joergbrech/moxunit-action@v1.2.0
         with:
           tests: tests
           src: src
