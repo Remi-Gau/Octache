@@ -147,21 +147,21 @@ function tokens = tokenize(varargin)
                 end
             end
 
-            % Partials need to keep the spaces on their left but other tags don't
-            if ~strcmp(tag_type, 'partial')
-                % Cannot use strip / deblank only as it turns newline into empty string
-                % because REASONS (???!!!)
-                tmp = strsplit(literal, newlinebreak);
-                tmp{1} = strip(tmp{1}, 'left');
-                literal = strjoin(tmp, newlinebreak);
-            end
-
-            % Remove spaces after linebreak and before standalone
-            if ismember(tag_type, {'comment', 'set delimiter'})
-                tmp = regexp(literal, newlinebreak, 'split');
-                tmp{end} = strip(tmp{end}, 'left');
-                literal = strjoin(tmp, newlinebreak);
-            end
+            %   Partials need to keep the spaces on their left but other tags don't
+            %   if ~strcmp(tag_type, 'partial')
+            %       % Cannot use strip / deblank only as it turns newline into empty string
+            %       % because REASONS (???!!!)
+            %       tmp = strsplit(literal, newlinebreak);
+            %       tmp{1} = strip(tmp{1}, 'left');
+            %       literal = strjoin(tmp, newlinebreak);
+            %   end
+            %
+            %   % Remove spaces after linebreak and before standalone
+            %   if ismember(tag_type, {'comment', 'set delimiter'})
+            %       tmp = regexp(literal, newlinebreak, 'split');
+            %       tmp{end} = strip(tmp{end}, 'left');
+            %       literal = strjoin(tmp, newlinebreak);
+            %   end
 
         end
 
