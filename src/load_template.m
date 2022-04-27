@@ -17,7 +17,8 @@ function template = load_template(tpl)
         fid = fopen(tpl, 'rt', 'native', 'UTF-8');
         if fid == -1
             % TODO add test error
-            error('Cannot open template file "%s".', tpl);
+            msg = sprintf('Cannot open template file "%s".', tpl);
+            octache_error(mfilename(), 'cannotOpenTemplate', msg);
         end
         template = fscanf(fid, '%c');
         fclose(fid);
@@ -27,7 +28,7 @@ function template = load_template(tpl)
 
     else
         % TODO add test error
-        error('Invalid template.');
+        octache_error(mfilename(), 'invalidTemplate', 'Invalid template.');
 
     end
 

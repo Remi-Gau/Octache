@@ -41,7 +41,8 @@ function  [tag_type, tag_key, template] = parse_tag(varargin)
         clear tmp;
     catch
         % TODO add test error
-        error('unclosed tag at line %i', CURRENT_LINE);
+        msg = sprintf('unclosed tag at line %i', CURRENT_LINE);
+        octache_error(mfilename(), 'unclosedTag', msg);
     end
 
     % Find the type meaning of the first character
@@ -64,7 +65,8 @@ function  [tag_type, tag_key, template] = parse_tag(varargin)
         % Double check to make sure we are
         if ~strcmp(tag(end), '=')
             % TODO add test error
-            error('unclosed tag at line %i', CURRENT_LINE);
+            msg = sprintf('unclosed delimiter tag at line %i?', CURRENT_LINE);
+            octache_error(mfilename(), 'unclosedDelimiterTag', msg);
         end
 
         tag_type = 'set delimiter';

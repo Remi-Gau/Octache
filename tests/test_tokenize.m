@@ -11,6 +11,37 @@ function test_suite = test_tokenize %#ok<*STOUT>
 
 end
 
+function test_tokenize_error_unclosed_section()
+
+    % GIVEN
+    template = '"{{#boolean}}This should be rendered."';
+
+    % WHEN
+    assertExceptionThrown(@() tokenize(template), 'Octache:tokenize:sectionUnclosed');
+
+end
+
+function test_tokenize_error_unopened_section()
+
+    % GIVEN
+    template = '"This should be rendered.{{/boolean}}"';
+
+    % WHEN
+    assertExceptionThrown(@() tokenize(template), 'Octache:tokenize:closingUnopenedSection');
+
+end
+
+function test_tokenize_error_closing_wrong_section()
+
+    % GIVEN
+    template = '"{{#boolean}}{{#foo}}This should be rendered.{{/boolean}}{{/foo}}"';
+
+    % WHEN
+    assertExceptionThrown(@() tokenize(template), ...
+                          'Octache:tokenize:closingSectionNotMatchedToLastOpened');
+
+end
+
 function test_tokenize_delimiters_2()
 
     % GIVEN

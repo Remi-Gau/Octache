@@ -106,25 +106,27 @@ function tokens = tokenize(varargin)
 
             case 'end'
                 % Then check to see if the last opened section
-                % is the same as us
+                % is the same as the one we are closing
                 try
                     last_section = open_sections{end};
                     open_sections(end) = [];
                 catch
-                    % TODO add test error
-                    error(['Trying to close tag %s.\n', ...
-                           'Looks like it was not opened.\n', ...
-                           'line %i'], ...
-                          tag_key, CURRENT_LINE + 1);
+                    msg = sprintf(['Trying to close tag "%s".\n', ...
+                                   'Looks like it was not opened.\n', ...
+                                   'line %i'], ...
+                                  tag_key, CURRENT_LINE + 1);
+                    id = 'closingUnopenedSection';
+                    octache_error(mfilename(), id, msg);
                 end
 
                 % Otherwise we need to complain
                 if ~strcmp(tag_key, last_section)
-                    % TODO add test error
-                    error(['Trying to close tag %s.\n', ...
-                           'Last open tag is %s\n', ...
-                           'line %i'], ...
-                          tag_key, last_section, CURRENT_LINE + 1);
+                    msg = sprintf(['Trying to close tag "%s".\n', ...
+                                   'Last open tag is "%s"\n', ...
+                                   'line %i'], ...
+                                  tag_key, last_section, CURRENT_LINE + 1);
+                    id = 'closingSectionNotMatchedToLastOpened';
+                    octache_error(mfilename(), id, msg);
                 end
         end
 
@@ -168,7 +170,7 @@ function tokens = tokenize(varargin)
             tokens{end, 2} = literal;
         end
 
-        % % Ignore comments and set delimiters
+        % Ignore comments and set delimiters
         if ~ismember(tag_type, {'comment', 'set delimiter?'})
             tokens{end + 1, 1} = tag_type;
             tokens{end, 2} = tag_key;
@@ -176,14 +178,16 @@ function tokens = tokenize(varargin)
 
     end
 
-    % If there are any open sections when we're done
+    % If there are any open sections when we're done we need to complain
     if ~isempty(open_sections)
-        % TODO add test error
-        % Then we need to complain
-        error(['Unexpected EOF\n', ...
-               'the tag %s was never closed\n', ...
-               'was opened at line %i'], ...
-              open_sections{end}, LAST_TAG_LINE);
+
+        msg = sprintf(['Unexpected EOF\n', ...
+                       'the tag "%s" was never closed\n', ...
+                       'was opened at line %i'], ...
+                      open_sections{end}, LAST_TAG_LINE);
+
+        id = 'sectionUnclosed';
+        octache_error(mfilename(), id, msg);
 
     end
 
