@@ -1,0 +1,7 @@
+{{> institution }}
+
+{{> mri_scanner_info }}
+
+{{> mri_sequence_description }} {{#suffix}}{{ suffix }}{{/suffix}} structural MRI data
+were collected ({{ nb_slices }} slices; repetition time, {{> common_mri_parameters }}
+echo time, TE= {{ echo_time }} ms; {{#image_size}}{{> image_size }}{{/image_size}}.

@@ -1,0 +1,23 @@
+{
+	"SeriesNumber": 5,
+	"SeriesDescription": "ADNI",
+	"ImageType": "ORIGINAL\\PRIMARY\\M\\ND\\NORM",
+	"Modality": "MR",
+	"RepetitionTime": 2.3,
+	"PhaseEncodingDirection": "y-",
+	"EchoTime": 0.00298,
+	"InversionTime": 1.1,
+	"SliceThickness": 1,
+	"MagneticFieldStrength": 7,
+	"ManufacturersModelName": "Terra",
+	"FlipAngle": 9,
+	"Manufacturer": "SIEMENS",
+	"SoftwareVersion": "syngo MR B15",
+	"MRAcquisitionType": "3D",
+	"InstitutionName": "MPI Tuebingen",
+	"InstitutionAddress": "Spemanstrasse",
+	"ScanningSequence": "GR\\IR",
+	"SequenceVariant": "SP\\MP",
+	"ScanOptions": "IR",
+	"SequenceName": "*tfl3d1_ns"
+}
