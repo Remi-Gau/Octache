@@ -1,7 +1,3 @@
-<!--
-When you have set up your repo you may need to change those badges
--->
-
 [![MISS_HIT: code style](https://github.com/Remi-Gau/Octache/actions/workflows/miss_hit_code_style.yml/badge.svg?branch=main)](https://github.com/Remi-Gau/Octache/actions/workflows/miss_hit_code_style.yml)
 [![MISS_HIT: code quality](https://github.com/Remi-Gau/Octache/actions/workflows/miss_hit_code_quality.yml/badge.svg?branch=main)](https://github.com/Remi-Gau/Octache/actions/workflows/miss_hit_code_quality.yml)
 [![Octave: test and coverage](https://github.com/Remi-Gau/Octache/actions/workflows/octave_test_and_coverage.yml/badge.svg?branch=main)](https://github.com/Remi-Gau/Octache/actions/workflows/octave_test_and_coverage.yml)
@@ -13,6 +9,16 @@ When you have set up your repo you may need to change those badges
 
 # Octache
 
-An Octave implementation of the [mustache templating language](http://mustache.github.io) that also happen to work with MATLAB.
+An Octave implementation of the
+[mustache templating language](http://mustache.github.io) for Octave that also
+happen to work with MATLAB.
+
+For more details, check the official documentation here:
+
+https://octache.readthedocs.io/en/latest/
+
+Try it on binder:
+
+https://mybinder.org/v2/gh/Remi-Gau/Octache/main
 
 Port of Noah Morrison's [chevron](https://github.com/noahmorrison/chevron)

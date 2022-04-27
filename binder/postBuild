@@ -1,0 +1,5 @@
+cd "${HOME}"
+
+make install_octave
+
+octave --no-gui --no-window-system --silent --eval "setup(); savepath ();"
