@@ -38,6 +38,26 @@ run the `setup.m`
 USAGE
 =====
 
+If you want to render a string directly.
+
+.. code-block:: matlab
+
+   output = octache('"Hello {{value}}! {{who}}"', ...
+                    'data', struct('value', 'world', ...
+                                   'who', 'I am Octache'))
+
+If you want to render the content of a file.
+
+.. code-block:: matlab
+
+   output = octache(path_to_file_to_render, ...
+                   'data', path_data_JSON, ...
+                   'partials_path', path_folder_with_partials, ...
+                   'partials_ext', 'mustache', ...
+                   'warn', true, ...
+                   'keep', true);
+
+
 ---
 
 .. toctree::
