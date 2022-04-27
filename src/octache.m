@@ -1,14 +1,26 @@
-function octache(varargin)
+function output = octache(varargin)
     %
-    % Render mustache templates using json files as input data
+    % Renders mustache templates
     %
-    % :param template: The mustache file
-    % :type template: path
+    % USAGE::
+    %
+    %   output = octache(path_to_file_to_render, ...
+    %                   'data', path_data_JSON, ...
+    %                   'partials_path', pwd, ...
+    %                   'partials_ext', 'mustache', ...
+    %                   'l_del', '{{', ...
+    %                   'r_del', '}}', ...
+    %                   'warn', true, ...
+    %                   'keep', true);
+    %
+    %
+    % :param template: The file or string to render
+    % :type template: path or char
     %
     % :param partials_path: The directory where your partials reside. Default is ``pwd``.
     % :type partials_path: path
     %
-    % :param data: The json data file
+    % :param data: The json data file or an equivalent structure
     % :type data: path
     %
     % :param partials_ext: The extension for your mustache partials, ``mustache`` by default
@@ -23,63 +35,54 @@ function octache(varargin)
     % :param warn: Print a warning for each undefined template key encountered
     % :type warn: boolean
     %
+    % :param keep: Keep unreplaced tags when a template substitution isn't found in the data
+    % :type keep: boolean
+    %
+    % **EXAMPLE 1**::
+    %
+    %   output = octache('"Hello {{value}}! {{who}}"', ...
+    %                    'data', struct('value', 'world', ...
+    %                                   'who', 'I am Octache'))
+    %
+    %
     % (C) Copyright 2022 Remi Gau
 
     is_file = @(x) exist(x, 'file');
 
     args = inputParser;
 
-    args.addRequired('template', is_file);
-    % only one json file allowed as data?
-    args.addParameter('data', '');
+    args.addRequired('template');
+    args.addParameter('data', struct([]));
     args.addParameter('partials_path', pwd, @isdir);
     args.addParameter('partials_ext', 'mustache', @ischar);
-    args.addParameter('left_delim', '{{', @ischar);
-    args.addParameter('right_delim', '}}', @ischar);
+    args.addParameter('l_del', '{{', @ischar);
+    args.addParameter('r_del', '}}', @ischar);
     args.addParameter('warn', true, @islogical);
-    % args.addParameter('version', '');
+    args.addParameter('keep', true, @islogical);
 
     args.parse(varargin{:});
 
-    % version = args.Results.version;
-    % if strcmp(version, '')
-    %     fprintf(1, [get_version(), '\n']);
-    %     return
-    % end
-
     template = args.Results.template;
-    data = args.Results.data;
-    path = args.Results.path;
-    ext = args.Results.template;
-    left_delim = args.Results.left_delim;
-    right_delim = args.Results.right_delim;
+    data = args.Results.data; % TODO add input validation on "data"
+    partials_path = args.Results.partials_path;
+    partials_ext = args.Results.partials_ext;
+    l_del = args.Results.l_del;
+    r_del = args.Results.r_del;
     warn = args.Results.warn;
+    keep = args.Results.keep;
 
-    if ~strcmp(data, '')
-        if ~is_file(data)
-            error('%i is not a file.', data);
-        else
-            % requires JSONio
-            data = jsondecode(data);
-        end
+    if ~isstruct(data) && is_file(data)
+        % requires JSONio
+        data = jsondecode(data);
     end
 
+    output = renderer(template, ...
+                      'data', data, ...
+                      'partials_path', partials_path, ...
+                      'partials_ext', partials_ext, ...
+                      'l_del', l_del, ...
+                      'r_del', r_del, ...
+                      'warn', warn, ...
+                      'keep', keep);
+
 end
-
-% def main(template, data=None, **kwargs):
-% with io.open(template, 'r', encoding='utf-8') as template_file:
-%     yaml_loader = kwargs.pop('yaml_loader', None) or 'SafeLoader'
-
-%     if data is not None:
-%         with io.open(data, 'r', encoding='utf-8') as data_file:
-%             data = _load_data(data_file, yaml_loader)
-%     else:
-%         data = {}
-
-%     args = {
-%         'template': template_file,
-%         'data': data
-%     }
-
-%     args.update(kwargs)
-%     return render(**args)
