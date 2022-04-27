@@ -11,6 +11,20 @@ function test_suite = test_get_key %#ok<*STOUT>
 
 end
 
+function test_get_key_warning_missing()
+
+    warn = true;
+    keep = false;
+    l_del = '{{';
+    r_del = '}}';
+    key = 'foo';
+    scopes = {struct('bar', 1)};
+
+    assertWarning(@() get_key(key, scopes, warn, keep, l_del, r_del), ...
+                  'Octache:get_key:MissingKey');
+
+end
+
 % function test_get_key_empty()
 %
 %     % GIVEN

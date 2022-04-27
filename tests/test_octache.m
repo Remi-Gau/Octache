@@ -24,7 +24,13 @@ end
 function test_octache_basic()
 
     % GIVEN
-    [tpl_file, data, expected, partials_path] = setup_test(''); %#ok<ASGLU>
+    partials_path = fullfile(path_test(), 'data');
+
+    data = fullfile(partials_path, 'data.json');
+
+    tpl_file = fullfile(partials_path, 'test.mustache');
+
+    expected = load_template(fullfile(path_test(), 'expected', 'test.rendered'));
 
     % WHEN
     output = octache(tpl_file, ...

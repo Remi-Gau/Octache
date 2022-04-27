@@ -73,7 +73,7 @@ function output = octache(varargin)
 
     if ~isstruct(data) && is_file(data)
         % requires JSONio
-        data = jsondecode(data);
+        data = jsonread(data);
     end
 
     output = renderer(template, ...

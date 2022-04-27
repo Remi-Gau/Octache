@@ -11,6 +11,20 @@ function test_suite = test_load_template %#ok<*STOUT>
 
 end
 
+function test_load_template_error_2()
+
+    template = 'non_existing_file.ms';
+    assertExceptionThrown(@() load_template(template), 'Octache:load_template:cannotOpenTemplate');
+
+end
+
+function test_load_template_error_1()
+
+    template = struct([]);
+    assertExceptionThrown(@() load_template(template), 'Octache:load_template:invalidTemplate');
+
+end
+
 function test_load_template_basic()
 
     test_dir = fileparts(mfilename('fullpath'));

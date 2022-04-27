@@ -59,7 +59,9 @@ function output = get_key(key, scopes, warn, keep, l_del, r_del)
         output = '';
 
         if warn
-            warning('Could not find key ''%s''', key);
+            id = 'Octache:get_key:MissingKey';
+            msg = sprintf('Could not find key ''%s''', key);
+            warning(id, msg); %#ok<SPWRN>
         end
 
         if keep
