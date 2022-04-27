@@ -177,7 +177,8 @@ function test_renderer_partial()
     output = renderer(tpl_file, ...
                       'data', data, ...
                       'partials_path', partials_path, ...
-                      'keep', false);
+                      'keep', false, ...
+                      'warn', false);
     % THEN
     assertEqual(output, expected);
 
@@ -253,18 +254,18 @@ function test_renderer_comment()
 
 end
 
-% TODO
-% function test_renderer_basic()
-%
-%     % GIVEN
-%     [tpl_file, data, expected, partials_path] = setup_test('');
-%
-%     % WHEN
-%     output = renderer(tpl_file, ...
-%                       'data', data, ...
-%                       'partials_path', partials_path);
-%
-%     % THEN
-%     assertEqual(output, expected);
-%
-% end
+function test_renderer_basic()
+
+    % GIVEN
+    [tpl_file, data, expected, partials_path] = setup_test(''); %#ok<ASGLU>
+
+    % WHEN
+    output = renderer(tpl_file, ...
+                      'data', data, ...
+                      'partials_path', partials_path, ...
+                      'warn', false);
+    % THEN
+    % TODO
+    % assertEqual(output, expected);
+
+end

@@ -19,7 +19,7 @@ function test_renderer_spec_sections()
 
     st = dbstack;
 
-    % Failing tests
+    % TODO Failing tests
     % 8, 11, 13, 18, 22, 23, 24, 26, 27, 28, 29
     for i = [1:7, 9:10, 12, 14:17, 19:21, 30] % 1:numel(spec.tests)
 
@@ -81,7 +81,7 @@ function test_renderer_spec_interpolation()
 
     st = dbstack;
 
-    % Failing tests
+    % TODO Failing tests
     % 25
     for i = [1:24, 26:39] % 1:numel(spec.tests)
 
@@ -109,7 +109,7 @@ function test_renderer_spec_partials()
 
     st = dbstack;
 
-    % Failing tests
+    % TODO Failing tests
     % 8, 9, 10
     for i = [1:7, 11] % 1:numel(spec.tests)
 
@@ -164,7 +164,7 @@ function test_renderer_spec_inverted()
 
     st = dbstack;
 
-    % Failing tests
+    % TODO Failing tests
     % 2 4 7 9 11 14:16 18 20 21
     for i = [1 3 5 6 8 10 12:13 17 19 22] % 1:numel(spec.tests)
 

@@ -11,35 +11,30 @@ function tokens = tokenize(varargin)
     %
     % Arguments:
     %
-    % :param template: The mustache file
-    % :type template: path
+    % :param template: the path to a mustache file or a string to render
+    % :type template: path or char
     %
-    % template -- a file-like object, or a string of a mustache template
+    % :param l_del: The default left delimiter, ``{{`` by default
+    % :type l_del: (1 x n) char
     %
-    % l_del -- The default left delimiter
-    %             ("{{" by default, as in spec compliant mustache)
-    %
-    % r_del -- The default right delimiter
-    %             ("}}" by default, as in spec compliant mustache)
+    % :param r_del: The default right delimiter, ``}}`` by default
+    % :type r_del: (1 x n) char
     %
     %
-    % Returns:
+    % :returns: - :tokens: A n x 2 cell of mustache tags in the form ``{tag_type, tag_key}``
     %
-    % A n x 2 cell of mustache tags in the form
+    % Where ``tag_type`` is one of:
     %
-    % -- {tag_type, tag_key}
+    % - ``literal``
+    % - ``section``
+    % - ``inverted section``
+    % - ``end``
+    % - ``partial``
+    % - ``no escape``
+    % - ``set delimiter``
     %
-    % Where tag_type is one of:
-    %  * literal
-    %  * section
-    %  * inverted section
-    %  * end
-    %  * partial
-    %  * no escape
-    %
-    % And tag_key is either the key or in the case of a literal tag,
+    % And ``tag_key`` is either the key or in the case of a literal tag,
     % the literal itself.
-    %
     %
     %
     % (C) Copyright 2022 Remi Gau

@@ -6,12 +6,6 @@ Welcome to the Octache documentation!
 Octave is an implementation of the `mustache templating language <http://mustache.github.io>`_
 for Octave that also happen to work with MATLAB.
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Content
-
-   main_functions
-
 Installation
 ============
 
@@ -44,8 +38,13 @@ run the `setup.m`
 USAGE
 =====
 
+---
 
+.. toctree::
+   :maxdepth: 0
+   :caption: Table of content
 
+   main_functions
 
 Indices and tables
 ==================

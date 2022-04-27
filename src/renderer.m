@@ -16,8 +16,8 @@ function output = renderer(varargin)
     %                       'warn', true, ...
     %                       'keep', true);
     %
-    % :param template: the path to a mustache file or a string to render
-    % :type template: path or char
+    % :param template: the path to a mustache file, a string or a cell of tokens to render
+    % :type template: path or char or a (n X 2) cell
     %
     % :param data: The content of a json data file or a string
     % :type data: structure or char
@@ -32,11 +32,11 @@ function output = renderer(varargin)
     %                Default: ``{}``.
     % :type scopes: cell
     %
-    % :param left_delim: The default left delimiter, ``{{`` by default
-    % :type left_delim: (1 x n) char
+    % :param l_del: The default left delimiter, ``{{`` by default
+    % :type l_del: (1 x n) char
     %
-    % :param right_delim: The default right delimiter, ``}}`` by default
-    % :type right_delim: (1 x n) char
+    % :param r_del: The default right delimiter, ``}}`` by default
+    % :type r_del: (1 x n) char
     %
     % :param padding: This is for padding partials, and shouldn't be used
     %                  (but can be if you really want to)
@@ -56,14 +56,14 @@ function output = renderer(varargin)
     % :returns: - :output: (char) A string containing the rendered template.
     %
     %
-    % **EXAMPLE 1:**::
+    % **EXAMPLE 1**::
     %
     %   output = renderer('"Hello {{value}}! {{>who}}"', ...
     %                     'data', struct('value', 'world'), ...
     %                     'partials_dict', struct('who', 'I am Octache'))
     %
     %
-    % **EXAMPLE 2:**
+    % **EXAMPLE 2**:
     %
     % Given the file structure::
     %
@@ -81,6 +81,7 @@ function output = renderer(varargin)
     %                       'scopes', {}, ...
     %                       'warn', true, ...
     %                       'keep', true)
+    %
     %
     % (C) Copyright 2022 Remi Gau
 
