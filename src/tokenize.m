@@ -69,6 +69,8 @@ function tokens = tokenize(varargin)
         template = load_template(template);
     end
 
+    % TODO ensure that we have newline characters and not \n?
+
     while true
 
         [literal, template] = grab_literal(template, l_del);
@@ -146,8 +148,8 @@ function tokens = tokenize(varargin)
             end
 
             % Partials need to keep the spaces on their left but other tags don't
-            if is_first && ~strcmp(tag_type, 'partial')
-                % Cannot use strip only as it turns newline into empty string
+            if ~strcmp(tag_type, 'partial')
+                % Cannot use strip / deblank only as it turns newline into empty string
                 % because REASONS (???!!!)
                 tmp = strsplit(literal, newlinebreak);
                 tmp{1} = strip(tmp{1}, 'left');
@@ -155,7 +157,7 @@ function tokens = tokenize(varargin)
             end
 
             % Remove spaces after linebreak and before standalone
-            if ~is_first && ismember(tag_type, {'comment', 'set delimiter'})
+            if ismember(tag_type, {'comment', 'set delimiter'})
                 tmp = regexp(literal, newlinebreak, 'split');
                 tmp{end} = strip(tmp{end}, 'left');
                 literal = strjoin(tmp, newlinebreak);
@@ -191,4 +193,19 @@ function tokens = tokenize(varargin)
 
     end
 
+end
+
+function str = strip(str, side)
+    %
+    % removes white space on a side
+    %
+    % shadows a toolbox function from MATLAB but makes it available in Octave
+
+    if strcmp(side, 'right')
+        str = deblank(str);
+    elseif strcmp(side, 'right')
+        str = fliplr(str);
+        str = deblank(str);
+        str = fliplr(str);
+    end
 end

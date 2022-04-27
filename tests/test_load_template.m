@@ -36,20 +36,26 @@ function test_load_template_basic()
     template = load_template(tpl_file);
 
     % THEN
-    assertEqual(size(template), [1, 1302]);
+    if is_octave
+        assertEqual(size(template), [1 1392]);
+
+    else
+        assertEqual(size(template), [1, 1302]);
+
+    end
 
 end
 
 function test_load_template_cellstr()
 
     % GIVEN
-    tpl = {'foo'; 'bar '};
+    tpl = {'foo\n'; 'bar '};
 
     % WHEN
     template = load_template(tpl);
 
     % THEN
     assert(ischar(template));
-    assertEqual(size(template), [2, 4]);
+    assertEqual(size(template), [2, 5]);
 
 end
