@@ -11,16 +11,8 @@ When you have set up your repo you may need to change those badges
 [![Documentation Status: latest](https://readthedocs.org/projects/Octache/badge/?version=latest)](https://Octache.readthedocs.io/en/latest/?badge=latest)
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/Remi-Gau/Octache/main)
 
-<!-- TODO add matlab tests badge -->
-<!-- TODO why badges show "no status"? -->
-
 # Octache
 
 An Octave implementation of the [mustache templating language](http://mustache.github.io) that also happen to work with MATLAB.
 
 Port of Noah Morrison's [chevron](https://github.com/noahmorrison/chevron)
-
-
-## TODO
-
-- unicode check support

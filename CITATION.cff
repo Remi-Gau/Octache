@@ -4,7 +4,7 @@
 
 cff-version: 1.2.0
 
-title: "mashlab"
+title: "Octache"
 
 version: 0.1.0
 
@@ -12,7 +12,7 @@ abstract: mashlab
 
 message: "If you use this software, please cite it as below."
 
-repository-code: "https://github.com/Remi-Gau/mashlab"
+repository-code: "https://github.com/Remi-Gau/Octache"
 
 contact:
   - email: remi.gau@gmail.com

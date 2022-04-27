@@ -11,6 +11,9 @@ function tokens = tokenize(varargin)
     %
     % Arguments:
     %
+    % :param template: The mustache file
+    % :type template: path
+    %
     % template -- a file-like object, or a string of a mustache template
     %
     % l_del -- The default left delimiter

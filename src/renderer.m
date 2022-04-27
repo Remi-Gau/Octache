@@ -1,27 +1,28 @@
 function output = renderer(varargin)
+    %
     % Render a mustache template with a data scope and partial capability.
     %
     % USAGE::
     %
-    %   renderer(template, ...
-    %          'data', data, ...
-    %          'partials_path', partials_path, ...
-    %          'partials_ext', partials_ext, ...
-    %          'scopes', {}, ...
-    %          'l_del', '{{', ...
-    %          'r_del', '}}', ...
-    %          'padding', '', ...
-    %          'partials_dict', struct([]), ...
-    %          'warn', true, ...
-    %          'keep', true);
+    %   output = renderer(template, ...
+    %                       'data', data, ...
+    %                       'partials_path', pwd, ...
+    %                       'partials_ext', 'mustache', ...
+    %                       'scopes', {}, ...
+    %                       'l_del', '{{', ...
+    %                       'r_del', '}}', ...
+    %                       'padding', '', ...
+    %                       'partials_dict', struct([]), ...
+    %                       'warn', true, ...
+    %                       'keep', true);
     %
-    % :param template: The mustache file
-    % :type template: path
+    % :param template: the path to a mustache file or a string to render
+    % :type template: path or char
     %
-    % :param data: The json data file
-    % :type data: path
+    % :param data: The content of a json data file or a string
+    % :type data: structure or char
     %
-    % :param path: The directory where your partials reside. Default is ``pwd``.
+    % :param path: The path where your partials reside. Default is ``pwd``.
     % :type path: path
     %
     % :param ext: The extension for your mustache partials, ``mustache`` by default
@@ -41,37 +42,47 @@ function output = renderer(varargin)
     %                  (but can be if you really want to)
     % :type padding: (1 x n) char
     %
+    % :param partials_dict: Will be search for partials before the filesystem is.
+    %                  ``struct('include', 'foo')`` is the same
+    %                  as a file called ``include.mustache``. Defaults: ``struct([])``.
+    % :type partials_dict: structure
+    %
     % :param warn: Print a warning for each undefined template key encountered
     % :type warn: boolean
     %
     % :param keep: Keep unreplaced tags when a template substitution isn't found in the data
     % :type keep: boolean
     %
-    % Returns:
-    %
-    % A string containing the rendered template.
-    %
-    % EXAMPLE:
+    % :returns: - :output: (char) A string containing the rendered template.
     %
     %
+    % **EXAMPLE 1:**::
     %
-    % Given the file structure...
+    %   output = renderer('"Hello {{value}}! {{>who}}"', ...
+    %                     'data', struct('value', 'world'), ...
+    %                     'partials_dict', struct('who', 'I am Octache'))
     %
-    % |- main.py
-    % |- main.ms
-    % |__ partials
-    % |__ part.ms
     %
-    % then main.py would make the following call:
+    % **EXAMPLE 2:**
     %
-    % render(open('main.ms', 'r'), {...}, 'partials', 'ms')
+    % Given the file structure::
+    %
+    %   |- main.ms
+    %   |- main.m
+    %   |__ partials
+    %       |- part.ms
+    %
+    % then `main.m` would make the following call::
+    %
+    %   output = renderer(fullefile(pwd, 'main.ms'), ...
+    %                       'data', struct('value', 'world'), ...
+    %                       'partials_path', fullefile(pwd, 'partials'), ...
+    %                       'partials_ext', 'ms', ...
+    %                       'scopes', {}, ...
+    %                       'warn', true, ...
+    %                       'keep', true)
     %
     % (C) Copyright 2022 Remi Gau
-
-    % partials_dict -- A python dictionary which will be search for partials
-    %                  before the filesystem is. {'include': 'foo'} is the same
-    %                  as a file called include.mustache
-    %                  (defaults to {})
 
     args = inputParser;
 

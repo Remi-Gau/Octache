@@ -8,6 +8,15 @@ SPHINXBUILD   ?= sphinx-build
 SOURCEDIR     = source
 BUILDDIR      = build
 
+define BROWSER_PYSCRIPT
+import os, webbrowser, sys
+
+from urllib.request import pathname2url
+
+webbrowser.open("file://" + pathname2url(os.path.abspath(sys.argv[1])))
+endef
+export BROWSER_PYSCRIPT
+
 # Put it first so that "make" without argument is like "make help".
 help:
 	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
@@ -21,3 +30,6 @@ help:
 
 doc:
 	@$(SPHINXBUILD) -b html "$(SOURCEDIR)" "$(BUILDDIR)"
+
+view:
+	firefox $$PWD/"$(BUILDDIR)"/html/index.html
