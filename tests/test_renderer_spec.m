@@ -21,10 +21,8 @@ function test_renderer_spec_sections()
     name_str = st.name;
 
     % TODO Failing tests
-    % section / scope ? related: 8,
-    % lineskip related: 11,
-    % 18, 22, 23, 24, 26, 27, 28, 29
-    for i = [1:7, 9:10, 12:17, 19:21, 30] % 1:numel(spec.tests)
+    % lineskip and space related: 8, 11, 23, 24, 26:29
+    for i = [1:7, 9:10, 12:22, 30] % 1:numel(spec.tests)
 
         % GIVEN
         subtest = setup_subtest(spec, i);
