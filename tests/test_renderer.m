@@ -11,6 +11,20 @@ function test_suite = test_renderer %#ok<*STOUT>
 
 end
 
+function test_renderer_unicode_partial()
+
+    % GIVEN
+    [tpl_file, data, expected, partials_path] = setup_test('unicode_partial');
+
+    % WHEN
+    output = renderer(tpl_file, ...
+                      'data', data, ...
+                      'partials_path', partials_path);
+    % THEN
+    assertEqual(output, expected);
+
+end
+
 function test_renderer_delimiter()
 
     % GIVEN
@@ -68,20 +82,19 @@ end
 %
 % end
 
-% TODO?
-% function test_renderer_scope()
-%
-%     % GIVEN
-%     [tpl_file, data, expected, partials_path] = setup_test('scope');
-%
-%     % WHEN
-%     output = renderer(tpl_file, ...
-%                       'data', data, ...
-%                       'partials_path', partials_path);
-%     % THEN
-%     assertEqual(output, expected);
-%
-% end
+function test_renderer_scope()
+
+    % GIVEN
+    [tpl_file, data, expected, partials_path] = setup_test('scope');
+
+    % WHEN
+    output = renderer(tpl_file, ...
+                      'data', data, ...
+                      'partials_path', partials_path);
+    % THEN
+    assertEqual(output, expected);
+
+end
 
 function test_renderer_variable()
 
@@ -110,21 +123,6 @@ function test_renderer_unicode_no_escape()
     assertEqual(output, expected);
 
 end
-
-% TODO?
-% function test_renderer_unicode_partial()
-%
-%     % GIVEN
-%     [tpl_file, data, expected, partials_path] = setup_test('unicode_partial');
-%
-%     % WHEN
-%     output = renderer(tpl_file, ...
-%                       'data', data, ...
-%                       'partials_path', partials_path);
-%     % THEN
-%     assertEqual(output, expected);
-%
-% end
 
 function test_renderer_unicode_variable()
 
