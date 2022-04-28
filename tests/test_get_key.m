@@ -85,7 +85,7 @@ function test_get_key_value()
     value = get_key(key, scopes, warn, keep, l_del, r_del);
 
     % THEN
-    assertEqual(value,  2);
+    assertEqual(value,  '2');
 
 end
 
@@ -103,7 +103,7 @@ function test_get_key_value_nested()
     value = get_key(key, scopes, warn, keep, l_del, r_del);
 
     % THEN
-    assertEqual(value,  2);
+    assertEqual(value,  '2');
 
 end
 

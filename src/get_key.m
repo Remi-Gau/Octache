@@ -84,4 +84,8 @@ function output = get_key(key, scopes, warn, keep, l_del, r_del)
         output = output{1};
     end
 
+    if isnumeric(output) && numel(output) == 1
+        output = num2str(output);
+    end
+
 end

@@ -119,12 +119,13 @@ function output = renderer(varargin)
         scopes = {data};
     end
 
+    if isempty(template)
+        return
+    end
+
     if iscell(template) && size(template, 2) == 2
         % allows recursive calls when dealing with sections
         tokens = template;
-
-    elseif isempty(template)
-        return
 
     else
         tokens = tokenize(template, 'l_del', l_del, 'r_del', r_del);
@@ -137,9 +138,6 @@ function output = renderer(varargin)
         tag = tokens{1, 1};
         key = tokens{1, 2};
         tokens(1, :) = [];
-
-        % Set the current scope
-        % current_scope = scopes{1};
 
         if strcmp(tag, 'end')
             % Pop out of the latest scope
@@ -262,7 +260,7 @@ function output = renderer(varargin)
             thing = get_key(key, scopes, warn, keep, l_del, r_del);
 
             if (islogical(thing) && thing) || ~isempty(thing)
-                [tags, tokens] = get_tags_this_section(tokens, 'inverted section');
+                [~, tokens] = get_tags_this_section(tokens, 'inverted section');
             end
 
             % TODO
