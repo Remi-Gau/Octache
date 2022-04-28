@@ -204,13 +204,20 @@ function output = renderer(varargin)
 
             tags = {};
 
+            nested_section = 0;
             while ~isempty(tokens)
 
                 section_tag = tokens{1, 1};
                 section_key = tokens{1, 2};
                 tokens(1, :) = [];
 
+                if strcmp(section_tag, 'section')
+                    nested_section = nested_section + 1;
+                end
                 if strcmp(section_tag, 'end')
+                    nested_section = nested_section - 1;
+                end
+                if nested_section < 0
                     break
                 end
 

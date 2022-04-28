@@ -30,7 +30,7 @@ function output = get_key(key, scopes, warn, keep, l_del, r_del)
 
             for i_key = 1:numel(sub_keys)
 
-                if isempty(fieldnames(sub_scope))
+                if isstruct(sub_scope) && isempty(fieldnames(sub_scope))
                     value = '';
                     key_found = true;
                     break
@@ -54,6 +54,9 @@ function output = get_key(key, scopes, warn, keep, l_del, r_del)
         end
 
         if key_found
+            if islogical(value) && ~value
+                value = '';
+            end
             output = {value};
             break
         end

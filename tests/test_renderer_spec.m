@@ -11,16 +11,20 @@ function test_suite = test_renderer_spec %#ok<*STOUT>
 
 end
 
-function test_renderer_spec_interpolation()
+function test_renderer_spec_sections()
 
     fprintf(1, '\n');
 
-    spec = jsonread(fullfile(spec_path(), 'interpolation.json'));
+    spec = jsonread(fullfile(spec_path(), 'sections.json'));
 
     st = dbstack;
     name_str = st.name;
 
-    for i = 1:numel(spec.tests)
+    % TODO Failing tests
+    % section / scope ? related: 8,
+    % lineskip related: 11,
+    % 18, 22, 23, 24, 26, 27, 28, 29
+    for i = [1:7, 9:10, 12:17, 19:21, 30] % 1:numel(spec.tests)
 
         % GIVEN
         subtest = setup_subtest(spec, i);
@@ -38,18 +42,16 @@ function test_renderer_spec_interpolation()
 
 end
 
-function test_renderer_spec_sections()
+function test_renderer_spec_interpolation()
 
     fprintf(1, '\n');
 
-    spec = jsonread(fullfile(spec_path(), 'sections.json'));
+    spec = jsonread(fullfile(spec_path(), 'interpolation.json'));
 
     st = dbstack;
     name_str = st.name;
 
-    % TODO Failing tests
-    % 8, 11, 13, 18, 22, 23, 24, 26, 27, 28, 29
-    for i = [1:7, 9:10, 12, 14:17, 19:21, 30] % 1:numel(spec.tests)
+    for i = 1:numel(spec.tests)
 
         % GIVEN
         subtest = setup_subtest(spec, i);
