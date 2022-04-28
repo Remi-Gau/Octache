@@ -202,7 +202,7 @@ function output = renderer(varargin)
 
             thing = get_key(key, scopes, warn, keep, l_del, r_del);
 
-            [tags, tokens] = get_tags_this_section(tokens);
+            [tags, tokens] = get_tags_this_section(tokens, 'section');
 
             text = '';
 
@@ -258,7 +258,7 @@ function output = renderer(varargin)
             thing = get_key(key, scopes, warn, keep, l_del, r_del);
 
             if (islogical(thing) && thing) || ~isempty(thing)
-                [tags, tokens] = get_tags_this_section(tokens);
+                [tags, tokens] = get_tags_this_section(tokens, 'inverted section');
             end
 
             % TODO
@@ -304,7 +304,7 @@ function output = renderer(varargin)
 
 end
 
-function [tags, tokens] = get_tags_this_section(tokens)
+function [tags, tokens] = get_tags_this_section(tokens, section_type)
     %
     % Gets all the tags from the current section or inverted section
     % and pops them from the tokens stash
@@ -319,7 +319,7 @@ function [tags, tokens] = get_tags_this_section(tokens)
         section_key = tokens{1, 2};
         tokens(1, :) = [];
 
-        if strcmp(section_tag, 'section')
+        if strcmp(section_tag, section_type)
             nested_section = nested_section + 1;
         end
         if strcmp(section_tag, 'end')

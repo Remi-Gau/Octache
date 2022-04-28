@@ -21,8 +21,8 @@ function test_renderer_spec_inverted()
     name_str = st.name;
 
     % TODO Failing tests
-    % 7 9 11 14:16 18 20 21
-    for i = [1:5 6 8 10 12:13 17 19 22] % 1:numel(spec.tests)
+    % 7 15:16 18 20 21
+    for i = [1:5 6 8:14 17 19 22] % 1:numel(spec.tests)
 
         % GIVEN
         subtest = setup_subtest(spec, i);
