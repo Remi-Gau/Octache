@@ -255,7 +255,11 @@ function output = renderer(varargin)
         elseif strcmp(tag, 'inverted section')
 
             % Add the flipped scope to the scopes
-            scope = get_key(key, scopes, warn, keep, l_del, r_del);
+            thing = get_key(key, scopes, warn, keep, l_del, r_del);
+
+            if (islogical(thing) && thing) || ~isempty(thing)
+                [tags, tokens] = get_tags_this_section(tokens);
+            end
 
             % TODO
             % scopes.insert(0, not scope)
