@@ -226,7 +226,7 @@ function output = renderer(varargin)
 
             end
 
-            if isempty(thing)
+            if (islogical(thing) && ~thing) || isempty(thing)
 
                 text = '';
                 output = [output, text];

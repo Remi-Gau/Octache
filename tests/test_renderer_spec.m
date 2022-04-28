@@ -11,6 +11,72 @@ function test_suite = test_renderer_spec %#ok<*STOUT>
 
 end
 
+function test_renderer_spec_inverted()
+
+    fprintf(1, '\n');
+
+    spec = jsonread(fullfile(spec_path(), 'inverted.json'));
+
+    st = dbstack;
+    name_str = st.name;
+
+    % TODO Failing tests
+    % 2 4 7 9 11 14:16 18 20 21
+    for i = [1 3 5 6 8 10 12:13 17 19 22] % 1:numel(spec.tests)
+
+        % GIVEN
+        subtest = setup_subtest(spec, i);
+        fprintf(1, ['\t' num2str(i) ' - ' name_str ':' subtest.name '\n']);
+
+        % WHEN
+        output = renderer(subtest.template, ...
+                          'keep', false, ...
+                          'data', subtest.data, ...
+                          'warn', false);
+        % THEN
+        assertEqual(output, subtest.expected);
+
+    end
+
+end
+
+function test_renderer_spec_delimiters()
+
+    fprintf(1, '\n');
+
+    spec = jsonread(fullfile(spec_path(), 'delimiters.json'));
+
+    st = dbstack;
+    name_str = st.name;
+
+    % TODO Failing tests
+    % 10 12 13 14
+    for i = [1:9 11 15:numel(spec.tests)]
+
+        % GIVEN
+        subtest = setup_subtest(spec, i);
+        fprintf(1, ['\t' num2str(i) ' - ' name_str ':' subtest.name '\n']);
+
+        % WHEN
+        if isfield(subtest, 'partials_dict')
+            output = renderer(subtest.template, ...
+                              'data', subtest.data, ...
+                              'keep', false, ...
+                              'partials_dict', subtest.partials_dict, ...
+                              'warn', false);
+        else
+            output = renderer(subtest.template, ...
+                              'data', subtest.data, ...
+                              'keep', false, ...
+                              'warn', false);
+        end
+        % THEN
+        assertEqual(output, subtest.expected);
+
+    end
+
+end
+
 function test_renderer_spec_sections()
 
     fprintf(1, '\n');
@@ -67,43 +133,6 @@ function test_renderer_spec_interpolation()
 
 end
 
-function test_renderer_spec_delimiters()
-
-    fprintf(1, '\n');
-
-    spec = jsonread(fullfile(spec_path(), 'delimiters.json'));
-
-    st = dbstack;
-    name_str = st.name;
-
-    % TODO Failing tests
-    % 10 12 13 14
-    for i = [1:9 11 15:numel(spec.tests)]
-
-        % GIVEN
-        subtest = setup_subtest(spec, i);
-        fprintf(1, ['\t' num2str(i) ' - ' name_str ':' subtest.name '\n']);
-
-        % WHEN
-        if isfield(subtest, 'partials_dict')
-            output = renderer(subtest.template, ...
-                              'data', subtest.data, ...
-                              'keep', false, ...
-                              'partials_dict', subtest.partials_dict, ...
-                              'warn', false);
-        else
-            output = renderer(subtest.template, ...
-                              'data', subtest.data, ...
-                              'keep', false, ...
-                              'warn', false);
-        end
-        % THEN
-        assertEqual(output, subtest.expected);
-
-    end
-
-end
-
 function test_renderer_spec_partials()
 
     fprintf(1, '\n');
@@ -146,35 +175,6 @@ function test_renderer_spec_comment()
     % TODO Failing tests
     % 4 6 7 9
     for i = [1:3 5 8 10:numel(spec.tests)] % 1:numel(spec.tests)
-
-        % GIVEN
-        subtest = setup_subtest(spec, i);
-        fprintf(1, ['\t' num2str(i) ' - ' name_str ':' subtest.name '\n']);
-
-        % WHEN
-        output = renderer(subtest.template, ...
-                          'keep', false, ...
-                          'data', subtest.data, ...
-                          'warn', false);
-        % THEN
-        assertEqual(output, subtest.expected);
-
-    end
-
-end
-
-function test_renderer_spec_inverted()
-
-    fprintf(1, '\n');
-
-    spec = jsonread(fullfile(spec_path(), 'inverted.json'));
-
-    st = dbstack;
-    name_str = st.name;
-
-    % TODO Failing tests
-    % 2 4 7 9 11 14:16 18 20 21
-    for i = [1 3 5 6 8 10 12:13 17 19 22] % 1:numel(spec.tests)
 
         % GIVEN
         subtest = setup_subtest(spec, i);
