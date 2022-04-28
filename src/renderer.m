@@ -152,7 +152,7 @@ function output = renderer(varargin)
 
         elseif strcmp(tag, 'literal')
             % Add padding to the key and add it to the output
-            output = [output, strrep(key, '\n', ['\n',  padding])];
+            output = [output, strrep(key, newlinebreak, [newlinebreak,  padding])];
 
         elseif strcmp(tag, 'variable')
             % Add the html escaped key to the output
@@ -271,11 +271,11 @@ function output = renderer(varargin)
             partial = get_partial(key, partials_dict, partials_path, partials_ext);
 
             % Find what to pad the partial with
-            % left = output.rpartition('\n')[2]
-            %             part_padding = padding;
-            %             if isspace(left)
-            %                 part_padding = [part_padding, left];
-            %             end
+            left = regexp(output, newlinebreak, 'split');
+            part_padding = padding;
+            if all(isspace(left{end}))
+                part_padding = [part_padding, left{end}];
+            end
 
             % Render the partial
             part_out =  renderer(partial, ...
@@ -284,16 +284,15 @@ function output = renderer(varargin)
                                  'scopes', scopes, ...
                                  'l_del', l_del, ...
                                  'r_del', r_del, ...
-                                 'padding', padding, ...
+                                 'padding', part_padding, ...
                                  'partials_dict', partials_dict, ...
                                  'warn', warn, ...
                                  'keep', keep);
 
-            % If the partial was indented
-            %             if isspace(left)
-            %                 % then remove the spaces from the end
-            %                 part_out = part_out.rstrip(' \t');
-            %             end
+            % If the partial was indented then remove the spaces from the end
+            if all(isspace(left{end}))
+                part_out(end - (numel(left{end}) - 1):end) = [];
+            end
 
             % Add the partials output to the ouput
             output = [output, part_out];

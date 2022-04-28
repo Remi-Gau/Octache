@@ -62,7 +62,6 @@ function tokens = tokenize(varargin)
     r_del = args.Results.r_del;
 
     is_standalone = true;
-    is_first = true;
     open_sections = {};
 
     if is_file(template)
@@ -74,7 +73,6 @@ function tokens = tokenize(varargin)
     while true
 
         [literal, template] = grab_literal(template, l_del);
-        is_first = false;
 
         % If the template is completed
         % Then yield the literal and leave
@@ -148,13 +146,13 @@ function tokens = tokenize(varargin)
             end
 
             %   Partials need to keep the spaces on their left but other tags don't
-            %   if ~strcmp(tag_type, 'partial')
-            %       % Cannot use strip / deblank only as it turns newline into empty string
-            %       % because REASONS (???!!!)
-            %       tmp = strsplit(literal, newlinebreak);
-            %       tmp{1} = strip(tmp{1}, 'left');
-            %       literal = strjoin(tmp, newlinebreak);
-            %   end
+            %     if ~strcmp(tag_type, 'partial')
+            %         % Cannot use strip / deblank only as it turns newline into empty string
+            %         % because REASONS (???!!!)
+            %         tmp = strsplit(literal, newlinebreak);
+            %         tmp{1} = strip(tmp{1}, 'left');
+            %         literal = strjoin(tmp, newlinebreak);
+            %     end
 
             % Remove spaces after linebreak and before standalone
             if ismember(tag_type, {'comment', 'set delimiter', 'section', 'inverted section'})
