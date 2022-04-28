@@ -30,11 +30,18 @@ function output = get_key(key, scopes, warn, keep, l_del, r_del)
 
             for i_key = 1:numel(sub_keys)
 
+                if isempty(fieldnames(sub_scope))
+                    value = '';
+                    key_found = true;
+                    break
+                end
+
                 if isfield(sub_scope, sub_keys{i_key})
                     sub_scope = sub_scope.(sub_keys{i_key});
                     if i_key == numel(sub_keys)
                         value = sub_scope;
                         key_found = true;
+                        break
                     end
                 end
 
@@ -47,7 +54,7 @@ function output = get_key(key, scopes, warn, keep, l_del, r_del)
         end
 
         if key_found
-            output{end + 1} = value;
+            output = {value};
             break
         end
 

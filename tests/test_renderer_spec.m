@@ -11,6 +11,33 @@ function test_suite = test_renderer_spec %#ok<*STOUT>
 
 end
 
+function test_renderer_spec_interpolation()
+
+    fprintf(1, '\n');
+
+    spec = jsonread(fullfile(spec_path(), 'interpolation.json'));
+
+    st = dbstack;
+    name_str = st.name;
+
+    for i = 1:numel(spec.tests)
+
+        % GIVEN
+        subtest = setup_subtest(spec, i);
+        fprintf(1, ['\t' num2str(i) ' - ' name_str ':' subtest.name '\n']);
+
+        % WHEN
+        output = renderer(subtest.template, ...
+                          'data', subtest.data, ...
+                          'keep', false, ...
+                          'warn', false);
+        % THEN
+        assertEqual(output, subtest.expected);
+
+    end
+
+end
+
 function test_renderer_spec_sections()
 
     fprintf(1, '\n');
@@ -70,35 +97,6 @@ function test_renderer_spec_delimiters()
                               'keep', false, ...
                               'warn', false);
         end
-        % THEN
-        assertEqual(output, subtest.expected);
-
-    end
-
-end
-
-function test_renderer_spec_interpolation()
-
-    fprintf(1, '\n');
-
-    spec = jsonread(fullfile(spec_path(), 'interpolation.json'));
-
-    st = dbstack;
-    name_str = st.name;
-
-    % TODO Failing tests
-    % 25
-    for i = [1:24, 26:39] % 1:numel(spec.tests)
-
-        % GIVEN
-        subtest = setup_subtest(spec, i);
-        fprintf(1, ['\t' num2str(i) ' - ' name_str ':' subtest.name '\n']);
-
-        % WHEN
-        output = renderer(subtest.template, ...
-                          'data', subtest.data, ...
-                          'keep', false, ...
-                          'warn', false);
         % THEN
         assertEqual(output, subtest.expected);
 
