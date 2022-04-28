@@ -11,6 +11,20 @@ function test_suite = test_tokenize %#ok<*STOUT>
 
 end
 
+function test_tokenize_indented_standalone()
+
+    % GIVEN
+    template = ['Begin.', newlinebreak, ...
+                '  {{! Indented Comment Block! }}', newlinebreak, ...
+                'End.'];
+
+    tokens = tokenize(template);
+
+    assertEqual(tokens{1, 2}, ['Begin.' newlinebreak]);
+    assertEqual(tokens{2, 2}, 'End.');
+
+end
+
 function test_tokenize_error_unclosed_section()
 
     % GIVEN

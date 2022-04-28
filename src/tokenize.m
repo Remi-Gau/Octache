@@ -155,13 +155,13 @@ function tokens = tokenize(varargin)
             %       tmp{1} = strip(tmp{1}, 'left');
             %       literal = strjoin(tmp, newlinebreak);
             %   end
-            %
-            %   % Remove spaces after linebreak and before standalone
-            %   if ismember(tag_type, {'comment', 'set delimiter'})
-            %       tmp = regexp(literal, newlinebreak, 'split');
-            %       tmp{end} = strip(tmp{end}, 'left');
-            %       literal = strjoin(tmp, newlinebreak);
-            %   end
+
+            % Remove spaces after linebreak and before standalone
+            if ismember(tag_type, {'comment', 'set delimiter', 'section', 'inverted section'})
+                tmp = regexp(literal, newlinebreak, 'split');
+                tmp{end} = strip(tmp{end}, 'left');
+                literal = strjoin(tmp, newlinebreak);
+            end
 
         end
 
@@ -203,7 +203,7 @@ function str = strip(str, side)
 
     if strcmp(side, 'right')
         str = deblank(str);
-    elseif strcmp(side, 'right')
+    elseif strcmp(side, 'left')
         str = fliplr(str);
         str = deblank(str);
         str = fliplr(str);
