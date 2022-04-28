@@ -210,11 +210,17 @@ function output = renderer(varargin)
 
             else
 
-                if isstruct(thing)
+                if isstruct(thing) || iscell(thing) || isnumeric(thing)
 
                     for i = 1:numel(thing)
 
-                        scopes = cat(1, {thing(i)}, scopes);
+                        if isstruct(thing)
+                            scopes = cat(1, {thing(i)}, scopes);
+                        elseif iscell(thing)
+                            scopes = cat(1, thing(i), scopes);
+                        elseif isnumeric(thing)
+                            scopes = cat(1, thing(i), scopes);
+                        end
 
                         tmp = renderer(tags, ...
                                        'scopes', scopes, ...
@@ -228,52 +234,6 @@ function output = renderer(varargin)
                                        'keep', keep);
 
                         text = [text, tmp];
-                        scopes(1) = [];
-
-                    end
-
-                elseif iscell(thing)
-
-                    for i = 1:numel(thing)
-
-                        scopes = cat(1, thing(i), scopes);
-
-                        tmp = renderer(tags, ...
-                                       'scopes', scopes, ...
-                                       'partials_path', partials_path, ...
-                                       'partials_ext', partials_ext, ...
-                                       'l_del', l_del, ...
-                                       'r_del', r_del, ...
-                                       'padding', padding, ...
-                                       'partials_dict', partials_dict, ...
-                                       'warn', warn, ...
-                                       'keep', keep);
-
-                        text = [text, tmp];
-
-                        scopes(1) = [];
-
-                    end
-
-                elseif isnumeric(thing)
-
-                    for i = 1:numel(thing)
-
-                        scopes = cat(1, thing(i), scopes);
-
-                        tmp = renderer(tags, ...
-                                       'scopes', scopes, ...
-                                       'partials_path', partials_path, ...
-                                       'partials_ext', partials_ext, ...
-                                       'l_del', l_del, ...
-                                       'r_del', r_del, ...
-                                       'padding', padding, ...
-                                       'partials_dict', partials_dict, ...
-                                       'warn', warn, ...
-                                       'keep', keep);
-
-                        text = [text, tmp];
-
                         scopes(1) = [];
 
                     end
