@@ -9,7 +9,7 @@ output = octache('"Hello {{value}}! {{who}}"', ...
                  'data', struct('value', 'world', ...
                                 'who', 'I am Octache'));
 
-disp(output);
+fprintf(1, output);
 
 fprintf('\n\n');
 
@@ -19,10 +19,17 @@ path_data_JSON = fullfile(pwd, 'demo.json');
 
 output = octache(path_to_file_to_render, ...
                  'data', path_data_JSON, ...
-                 'warn', true, ...
-                 'keep', true);
+                 'warn', false, ...
+                 'keep', false);
 
-disp(output);
+fprintf(1, output);
+
+% Expected
+
+% <h1>Colors</h1>
+% <li><strong>red</strong></li>
+% <li><a href="#Green">green</a></li>
+% <li><a href="#Blue">blue</a></li>
 
 fprintf('\n\n');
 
@@ -39,4 +46,4 @@ output = octache(path_to_file_to_render, ...
                  'warn', true, ...
                  'keep', true);
 
-disp(output);
+fprintf(1, output);

@@ -5,7 +5,7 @@ function output = get_key(key, scopes, warn, keep, l_del, r_del)
     %
     % (C) Copyright 2022 Remi Gau
 
-    output = {};
+    output = '';
 
     % If the key is a dot
     if strcmp(key,  '.')
@@ -75,12 +75,12 @@ function output = get_key(key, scopes, warn, keep, l_del, r_del)
         end
 
         if keep
-            output = [l_del key r_del];
+            output = {[l_del key r_del]};
         end
 
     end
 
-    if numel(output) == 1
+    if iscell(output) && numel(output) == 1
         output = output{1};
     end
 

@@ -123,6 +123,9 @@ function output = renderer(varargin)
         % allows recursive calls when dealing with sections
         tokens = template;
 
+    elseif isempty(template)
+        return
+
     else
         tokens = tokenize(template, 'l_del', l_del, 'r_del', r_del);
 
@@ -250,6 +253,7 @@ function output = renderer(varargin)
 
             end
 
+            assert(ischar(text));
             output = [output, text];
 
         elseif strcmp(tag, 'inverted section')
