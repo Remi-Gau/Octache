@@ -18,7 +18,7 @@ function setup()
     octave_min_version = '4.0.3';
     matlab_min_version = '8.6.0';
 
-    package_list = {};
+    package_list = {}; % 'io', 'statistics', 'image'}
 
     disp('Adding code to the path.');
     pth = fileparts(mfilename('fullpath'));
