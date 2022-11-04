@@ -1,0 +1,4 @@
+[codespell]
+skip = .git,env,*build,lib,spec
+ignore-words-list = falsy,te,nd
+builtin = clear,rare

@@ -294,7 +294,7 @@ function output = renderer(varargin)
                 part_out(end - (numel(left{end}) - 1):end) = [];
             end
 
-            % Add the partials output to the ouput
+            % Add the partials output to the output
             output = [output, part_out];
 
         end
