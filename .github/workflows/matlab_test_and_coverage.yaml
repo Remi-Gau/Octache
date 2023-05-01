@@ -30,7 +30,7 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-      - name: Install MATLAB ${{ matrix.version }}
+      - name: Install MAT
         uses: matlab-actions/setup-matlab@v1.2.4
         with:
           release: ${{ matrix.version }}
