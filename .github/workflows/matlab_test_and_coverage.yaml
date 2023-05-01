@@ -33,7 +33,7 @@ jobs:
       - name: Install MATLAB ${{ matrix.version }}
         uses: matlab-actions/setup-matlab@v1.2.4
         with:
-          release: ${{ matrix.matlab-version }}
+          release: ${{ matrix.version }}
 
       - uses: actions/checkout@v3
         with:
