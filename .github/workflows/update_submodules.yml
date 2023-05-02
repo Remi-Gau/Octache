@@ -1,3 +1,4 @@
+---
 name: update submodules
 
 # requires sudmodules URL to be "https..." (no ssh)
@@ -30,22 +31,22 @@ name: update submodules
 on:
   push:
     branches:
-      - main
-      - master
-      - dev
+    - main
+    - master
+    - dev
   schedule:
-    - cron: "0 0 1,15 * *"
+  - cron: 0 0 1,15 * *
 
   # to trigger update manually from the Action tab in github
   workflow_dispatch:
     inputs:
       log:
-        description: "Log"
+        description: Log
         required: false
 
 env:
   # to update all submodules
-  SUBMOD_TO_UPDATE: "*"
+  SUBMOD_TO_UPDATE: '*'
   # otherwise use a space separated list of the relative paths of each submodule to update
   # SUBMOD_TO_UPDATE: "lib/sub_3 lib/sub_1"
 
@@ -62,39 +63,39 @@ jobs:
 
     steps:
 
-      - name: Clone repo
-        uses: actions/checkout@v3
-        with:
-          submodules: true
+    - name: Clone repo
+      uses: actions/checkout@v3
+      with:
+        submodules: true
 
       # check out the correct branch for each submodule and pull them all
       # https://stackoverflow.com/questions/5828324/update-git-submodule-to-latest-commit-on-origin
-      - name: Update submodules
-        run: |
-              start_dir=$PWD
-              if [ "${SUBMOD_TO_UPDATE}" = "*" ]; then
-                  submodules=$(git submodule | awk '{print $2}')
-              else
-                  submodules=$(echo -e ${SUBMOD_TO_UPDATE} | sed "s/ /\n/g")
-              fi
-              nb_submod=$(echo "${submodules}" | wc -l)
-              echo -e "\nUPDATING ${nb_submod} SUBMODULES"
-              echo -e "${submodules}"
-              for i in $(seq 1 ${nb_submod}); do
-                  path=$(echo -e ${submodules} | awk -v i=${i} '{print $i}')
-                  branch=$(git config --get --file .gitmodules submodule.${path}.branch)
-                  echo -e "\nswitching submodule ${path} to ${branch}"
-                  cd "${path}" || exit
-                  git checkout ${branch}
-                  cd "${start_dir}"
-              done
-              git submodule update --remote --merge
+    - name: Update submodules
+      run: |
+        start_dir=$PWD
+        if [ "${SUBMOD_TO_UPDATE}" = "*" ]; then
+            submodules=$(git submodule | awk '{print $2}')
+        else
+            submodules=$(echo -e ${SUBMOD_TO_UPDATE} | sed "s/ /\n/g")
+        fi
+        nb_submod=$(echo "${submodules}" | wc -l)
+        echo -e "\nUPDATING ${nb_submod} SUBMODULES"
+        echo -e "${submodules}"
+        for i in $(seq 1 ${nb_submod}); do
+            path=$(echo -e ${submodules} | awk -v i=${i} '{print $i}')
+            branch=$(git config --get --file .gitmodules submodule.${path}.branch)
+            echo -e "\nswitching submodule ${path} to ${branch}"
+            cd "${path}" || exit
+            git checkout ${branch}
+            cd "${start_dir}"
+        done
+        git submodule update --remote --merge
 
       # if there have been changes,
       # a PR is created using the checkout branch for this workflow
       # https://github.com/peter-evans/create-pull-request
-      - name: Create Pull-Request
-        uses: peter-evans/create-pull-request@v4
-        with:
-          commit-message: Update submodules
-          delete-branch: true
+    - name: Create Pull-Request
+      uses: peter-evans/create-pull-request@v4
+      with:
+        commit-message: Update submodules
+        delete-branch: true

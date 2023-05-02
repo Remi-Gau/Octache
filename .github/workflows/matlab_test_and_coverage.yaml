@@ -1,4 +1,5 @@
-name: "MATLAB: test and coverage"
+---
+name: 'MATLAB: test and coverage'
 
 # Installs
 # - MATLAB github action
@@ -12,11 +13,11 @@ name: "MATLAB: test and coverage"
 on:
   push:
     branches:
-      - main
-      - dev
+    - main
+    - dev
   pull_request:
     branches:
-      - '*'
+    - '*'
 
 jobs:
   matlab_tests:
@@ -30,40 +31,38 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-      - name: Install MAT
-        uses: matlab-actions/setup-matlab@v1.2.4
-        with:
-          release: ${{ matrix.version }}
+    - name: Install MAT
+      uses: matlab-actions/setup-matlab@v1.2.4
+      with:
+        release: ${{ matrix.version }}
 
-      - uses: actions/checkout@v3
-        with:
-          submodules: true
-          fetch-depth: 1
+    - uses: actions/checkout@v3
+      with:
+        submodules: true
+        fetch-depth: 1
 
-      - name: Install Moxunit and MOcov
-        run: |
-          git clone https://github.com/MOxUnit/MOxUnit.git --depth 1
-          git clone https://github.com/MOcov/MOcov.git --depth 1
+    - name: Install Moxunit and MOcov
+      run: |
+        git clone https://github.com/MOxUnit/MOxUnit.git --depth 1
+        git clone https://github.com/MOcov/MOcov.git --depth 1
 
-      - name: Run tests
-        uses: matlab-actions/run-command@v1.1.3
-        with:
-          command:
-            cd(fullfile(getenv('GITHUB_WORKSPACE'), '.github', 'workflows'));
-            run run_tests_ci;
+    - name: Run tests
+      uses: matlab-actions/run-command@v1.1.3
+      with:
+        command: cd(fullfile(getenv('GITHUB_WORKSPACE'), '.github', 'workflows')); run run_tests_ci;
 
-      - name: Check logs unix
-        if: contains(fromJSON('["ubuntu", "macos"]'), matrix.os)
-        run: cat test_report.log | grep 0
+    - name: Check logs unix
+      if: contains(fromJSON('["ubuntu", "macos"]'), matrix.os)
+      run: cat test_report.log | grep 0
 
-      - name: Check logs windows
-        if: contains(fromJSON('["windows"]'), matrix.os)
-        run: Get-Content test_report.log | Select-String -Pattern "0"
+    - name: Check logs windows
+      if: contains(fromJSON('["windows"]'), matrix.os)
+      run: Get-Content test_report.log | Select-String -Pattern "0"
 
-      - name: Code coverage
-        uses: codecov/codecov-action@v3
-        with:
-          file: coverage.xml
-          flags: ${{ matrix.os }} - matlab ${{ matrix.version }}
-          name: codecov-umbrella
-          fail_ci_if_error: true
+    - name: Code coverage
+      uses: codecov/codecov-action@v3
+      with:
+        file: coverage.xml
+        flags: ${{ matrix.os }} - matlab ${{ matrix.version }}
+        name: codecov-umbrella
+        fail_ci_if_error: true
