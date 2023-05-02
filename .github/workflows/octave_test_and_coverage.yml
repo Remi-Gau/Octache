@@ -1,13 +1,18 @@
-name: "Octave: test and coverage"
+---
+name: 'Octave: test and coverage'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 on:
   push:
     branches:
-      - main
-      - dev
+    - main
+    - dev
   pull_request:
     branches:
-      - '*'
+    - '*'
 
 jobs:
   octave_tests:
@@ -15,35 +20,34 @@ jobs:
 
     steps:
 
-      - name: Install dependencies
-        run: |
-          sudo apt-get -y -qq update
-          sudo apt-get -y install octave liboctave-dev
+    - name: Install dependencies
+      run: |
+        sudo apt-get -y -qq update
+        sudo apt-get -y install octave liboctave-dev
 
-      - uses: actions/checkout@v3
-        with:
-          submodules: true
-          fetch-depth: 1
+    - uses: actions/checkout@v3
+      with:
+        submodules: true
+        fetch-depth: 1
 
-      - name: Compile JSONio
-        run: |
-          cd lib/JSONio
-          mkoctfile --mex jsonread.c jsmn.c -DJSMN_PARENT_LINKS
+    - name: Compile JSONio
+      run: |
+        cd lib/JSONio
+        mkoctfile --mex jsonread.c jsmn.c -DJSMN_PARENT_LINKS
 
-      - name: MOxUnit Action
-        uses: joergbrech/moxunit-action@v1.3.0
-        with:
-          tests: tests
-          src: src
-          ext: lib/JSONio tests/utils # External resources to add to the search put (excluded from coverage)
-          with_coverage: true
-          cover_xml_file: coverage.xml
+    - name: MOxUnit Action
+      uses: joergbrech/moxunit-action@v1.3.0
+      with:
+        tests: tests
+        src: src
+        ext: lib/JSONio tests/utils   # External resources to add to the search put (excluded from coverage)
+        with_coverage: true
+        cover_xml_file: coverage.xml
 
-      # - name: Code coverage
-      #   uses: codecov/codecov-action@v1
-      #   with:
-      #     token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
-      #     file: coverage.xml # optional
-      #     flags: unittests # optional
-      #     name: codecov-umbrella # optional
-      #     fail_ci_if_error: true # optional (default = false)
+    - name: Code coverage
+      uses: codecov/codecov-action@v3
+      with:
+        file: coverage.xml
+        flags: ubuntu-latest_octave
+        name: codecov-umbrella
+        fail_ci_if_error: true
