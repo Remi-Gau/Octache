@@ -57,7 +57,11 @@ jobs:
 
     - name: Check logs windows
       if: matrix.os == 'windows-latest'
-      run: Get-Content test_report.log | Select-String -Pattern "0"
+      run: |
+        if (-not (Get-Content test_report.log | Select-String -Pattern "0")) {
+          throw "Some tests failed."
+        }
+
 
     - name: Code coverage
       uses: codecov/codecov-action@v3
