@@ -52,11 +52,11 @@ jobs:
         command: cd(fullfile(getenv('GITHUB_WORKSPACE'), '.github', 'workflows')); run run_tests_ci;
 
     - name: Check logs unix
-      if: contains(fromJSON('["ubuntu", "macos"]'), matrix.os)
+      if: matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest'
       run: cat test_report.log | grep 0
 
     - name: Check logs windows
-      if: contains(fromJSON('["windows"]'), matrix.os)
+      if: matrix.os == 'windows-latest'
       run: Get-Content test_report.log | Select-String -Pattern "0"
 
     - name: Code coverage
