@@ -2,13 +2,15 @@
 name: 'MATLAB: test and coverage'
 
 # Installs
-# - MATLAB github action
+# - MATLAB
 # - MOXunit
 # - MOcov
-# Get test data
-# cd into .github/workflows
 # run .github/workflows/tests_matlab.m
 # If tests pass, uploads coverage to codecov
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 on:
   push:
@@ -26,7 +28,7 @@ jobs:
       matrix:
         version: [R2021a, R2021b, R2022a, R2022b]
         os: [ubuntu-latest, macos-latest, windows-latest]
-      fail-fast: false  # Don't cancel all jobs if one fails
+      fail-fast: false
 
     runs-on: ${{ matrix.os }}
 
@@ -53,15 +55,13 @@ jobs:
 
     - name: Check logs unix
       if: matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest'
-      run: cat test_report.log | grep 0
-
+      run: grep -q 0 test_report.log || { echo "Some tests failed. Check the 'Run tests' step to know which ones." >&2; exit 1; }
     - name: Check logs windows
       if: matrix.os == 'windows-latest'
       run: |
         if (-not (Get-Content test_report.log | Select-String -Pattern "0")) {
-          throw "Some tests failed."
+          throw "Some tests failed.  Check the 'Run tests' step to know which ones."
         }
-
 
     - name: Code coverage
       uses: codecov/codecov-action@v3
