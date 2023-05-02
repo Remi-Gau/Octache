@@ -94,8 +94,8 @@ jobs:
       # if there have been changes,
       # a PR is created using the checkout branch for this workflow
       # https://github.com/peter-evans/create-pull-request
-    - name: Create Pull-Request
-      uses: peter-evans/create-pull-request@v4
-      with:
-        commit-message: Update submodules
-        delete-branch: true
+      - name: Create Pull-Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          commit-message: Update submodules
+          delete-branch: true
