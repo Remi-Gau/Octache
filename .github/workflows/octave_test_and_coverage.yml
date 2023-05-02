@@ -38,3 +38,11 @@ jobs:
           ext: lib/JSONio tests/utils # External resources to add to the search put (excluded from coverage)
           with_coverage: true
           cover_xml_file: coverage.xml
+
+      - name: Code coverage
+        uses: codecov/codecov-action@v3
+        with:
+          file: coverage.xml
+          flags: octave
+          name: codecov-umbrella
+          fail_ci_if_error: true
