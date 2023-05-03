@@ -23,7 +23,7 @@ function run_tests()
     addpath(fullfile(test_folder, 'utils'));
 
     if ispc
-        success = moxunit_runtests(test_folder, '-verbose');
+        success = moxunit_runtests(test_folder, '-verbose', '-recursive');
 
     else
         success = moxunit_runtests(test_folder, ...
