@@ -34,14 +34,8 @@ function run_tests()
                                    '-cover_html_dir', fullfile(pwd, 'coverage_html'));
     end
 
-    fileID = fopen('test_report.log', 'w');
-    if success
-        fprintf(fileID, '0');
-    else
-        fprintf(fileID, '1');
-    end
-    fclose(fileID);
-
     toc;
+
+    exit(double(~success));
 
 end
