@@ -27,20 +27,15 @@ function run_tests()
 
     else
         success = moxunit_runtests(test_folder, ...
-                                   '-verbose', '-recursive', '-with_coverage', ...
+                                   '-verbose', '-recursive', '-randomize_order', ...
+                                   '-with_coverage', ...
                                    '-cover', folder_to_cover, ...
                                    '-cover_xml_file', 'coverage.xml', ...
                                    '-cover_html_dir', fullfile(pwd, 'coverage_html'));
     end
 
-    fileID = fopen('test_report.log', 'w');
-    if success
-        fprintf(fileID, '0');
-    else
-        fprintf(fileID, '1');
-    end
-    fclose(fileID);
-
     toc;
+
+    exit(double(~success));
 
 end
