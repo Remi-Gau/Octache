@@ -1,5 +1,4 @@
-[![MISS_HIT: code style](https://github.com/Remi-Gau/Octache/actions/workflows/miss_hit_code_style.yml/badge.svg?branch=main)](https://github.com/Remi-Gau/Octache/actions/workflows/miss_hit_code_style.yml)
-[![MISS_HIT: code quality](https://github.com/Remi-Gau/Octache/actions/workflows/miss_hit_code_quality.yml/badge.svg?branch=main)](https://github.com/Remi-Gau/Octache/actions/workflows/miss_hit_code_quality.yml)
+[![miss hit](https://img.shields.io/badge/code%20style-miss_hit-000000.svg)](https://misshit.org/)(https://github.com/Remi-Gau/Octache/actions/workflows/miss_hit_code_quality.yml)
 [![Octave: test and coverage](https://github.com/Remi-Gau/Octache/actions/workflows/octave_test_and_coverage.yml/badge.svg?branch=main)](https://github.com/Remi-Gau/Octache/actions/workflows/octave_test_and_coverage.yml)
 [![MATLAB: test and coverage](https://github.com/Remi-Gau/Octache/actions/workflows/matlab_test_and_coverage.yaml/badge.svg)](https://github.com/Remi-Gau/Octache/actions/workflows/matlab_test_and_coverage.yaml)
 [![codecov](https://codecov.io/gh/Remi-Gau/Octache/branch/main/graph/badge.svg?token=aFXb7WSAsm)](https://codecov.io/gh/Remi-Gau/Octache)
