@@ -34,7 +34,7 @@ jobs:
 
     steps:
     - name: Install MAT
-      uses: matlab-actions/setup-matlab@v1.2.4
+      uses: matlab-actions/setup-matlab@v1.2.5
       with:
         release: ${{ matrix.version }}
 
