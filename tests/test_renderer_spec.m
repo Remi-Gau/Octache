@@ -20,13 +20,23 @@ function test_renderer_spec_partials()
     st = dbstack;
     name_str = st.name;
 
+    global_status = false;
+
     % TODO Failing tests
-    % 9, 10
-    for i = [1:8, 11] % 1:numel(spec.tests)
+    idx_failing_cases = [9, 10];
+    for i = 1:numel(spec.tests)
 
         % GIVEN
         subtest = setup_subtest(spec, i);
         fprintf(1, ['\t' num2str(i) ' - ' name_str ':' subtest.name '\n']);
+
+        status = expected_failure(i, idx_failing_cases);
+        if status
+            if ~global_status && status
+                global_status = true;
+            end
+            continue
+        end
 
         % WHEN
         output = renderer(subtest.template, ...
@@ -37,6 +47,10 @@ function test_renderer_spec_partials()
         % THEN
         assertEqual(output, subtest.expected);
 
+    end
+
+    if global_status
+        moxunit_throw_test_skipped_exception('Some tests were skipped');
     end
 
 end
@@ -77,13 +91,23 @@ function test_renderer_spec_inverted()
     st = dbstack;
     name_str = st.name;
 
+    global_status = false;
+
     % TODO Failing tests
-    % 7 15:16 18 21
-    for i = [1:5 6 8:14 17 19 20 22] % 1:numel(spec.tests)
+    idx_failing_cases = [7 15 16 18 21];
+    for i = 1:numel(spec.tests)
 
         % GIVEN
         subtest = setup_subtest(spec, i);
         fprintf(1, ['\t' num2str(i) ' - ' name_str ':' subtest.name '\n']);
+
+        status = expected_failure(i, idx_failing_cases);
+        if status
+            if ~global_status && status
+                global_status = true;
+            end
+            continue
+        end
 
         % WHEN
         output = renderer(subtest.template, ...
@@ -93,6 +117,10 @@ function test_renderer_spec_inverted()
         % THEN
         assertEqual(output, subtest.expected);
 
+    end
+
+    if global_status
+        moxunit_throw_test_skipped_exception('Some tests were skipped');
     end
 
 end
@@ -141,13 +169,24 @@ function test_renderer_spec_sections()
     st = dbstack;
     name_str = st.name;
 
+    global_status = false;
+
     % TODO Failing tests
-    % lineskip and space related: 8, 11, 23, 24, 26:30
-    for i = [1:7, 9:10, 12:22] % 1:numel(spec.tests)
+    % lineskip and space related
+    idx_failing_cases = [8 11 27 28 29 30 33];
+    for i = 1:numel(spec.tests)
 
         % GIVEN
         subtest = setup_subtest(spec, i);
         fprintf(1, ['\t' num2str(i) ' - ' name_str ':' subtest.name '\n']);
+
+        status = expected_failure(i, idx_failing_cases);
+        if status
+            if ~global_status && status
+                global_status = true;
+            end
+            continue
+        end
 
         % WHEN
         output = renderer(subtest.template, ...
@@ -157,6 +196,10 @@ function test_renderer_spec_sections()
         % THEN
         assertEqual(output, subtest.expected);
 
+    end
+
+    if global_status
+        moxunit_throw_test_skipped_exception('Some tests were skipped');
     end
 
 end
@@ -214,5 +257,13 @@ function subtest = setup_subtest(spec, i)
             subtest.partials_dict = spec.tests{i}.partials;
         end
 
+    end
+end
+
+function status = expected_failure(idx, idx_failing_cases)
+    status = false;
+    if any(idx_failing_cases == idx)
+        fprintf(1, '\t\tXFAIL\n');
+        status = true;
     end
 end
