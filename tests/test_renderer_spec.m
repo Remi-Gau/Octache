@@ -21,8 +21,8 @@ function test_renderer_spec_partials()
     name_str = st.name;
 
     % TODO Failing tests
-    % 8, 9
-    for i = [10 1:7, 10:11] % 1:numel(spec.tests)
+    % 9, 10
+    for i = [1:8, 11] % 1:numel(spec.tests)
 
         % GIVEN
         subtest = setup_subtest(spec, i);
@@ -142,8 +142,8 @@ function test_renderer_spec_sections()
     name_str = st.name;
 
     % TODO Failing tests
-    % lineskip and space related: 8, 11, 23, 24, 26:27 29
-    for i = [1:7, 9:10, 12:22, 28, 30] % 1:numel(spec.tests)
+    % lineskip and space related: 8, 11, 23, 24, 26:30
+    for i = [1:7, 9:10, 12:22] % 1:numel(spec.tests)
 
         % GIVEN
         subtest = setup_subtest(spec, i);
