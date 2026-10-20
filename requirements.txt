@@ -7,7 +7,7 @@ Sphinx
 sphinxcontrib-matlabdomain
 sphinx_rtd_theme
 sphinx-copybutton
-urllib3==2.7.0
+urllib3==2.8.0
 
 # notebooks
 octave_kernel
